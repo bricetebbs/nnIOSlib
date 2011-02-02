@@ -18,6 +18,7 @@
 -(void)dealloc
 {
     [dvVarName release];
+    [dvStoreHandler release];
     [super dealloc];
 }
 

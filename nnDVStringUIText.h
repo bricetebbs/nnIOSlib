@@ -8,28 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "nnDVStoreProtocol.h"
+#import "nnDV.h"
 
-@class nnDVStringUIText;
-@protocol nnDVStringUITextDelegate
--(void)valueUpdated: (nnDVStringUIText*)preference newValue: (NSString*)value;
-@end
-
-@interface nnDVStringUIText : UITextField {
-    NSString* preferenceName;
-    id <nnDVStoreProtocol> handler;
-    id <nnDVStringUITextDelegate> pref_delegate;
+@interface nnDVStringUIText : UITextField  <nnDVUIBaseProtocol>
+{
+    nnDVBase* dvInfo;
 }
 
-@property (nonatomic, assign)  id <nnDVStringUITextDelegate> pref_delegate;
+@property (nonatomic, retain) nnDVBase* dvInfo;
 
--(void)setup: (NSString*)name withHandler: (id <nnDVStoreProtocol>) handler;
-
-// Load the UI with the value
--(void)populate;
-
-// Store the value in the preference Store
--(void)save;
 @end
 
 

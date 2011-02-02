@@ -7,34 +7,23 @@
 //
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "nnDVStoreProtocol.h"
+#import "nnDV.h"
 
-
-@class nnDVDoubleUISlider;
-@protocol nnDVDoubleUISliderDelegate
--(void)valueUpdated: (nnDVDoubleUISlider*)preference newValue: (double)value;
-@end
-
-@interface nnDVDoubleUISlider : UISlider {
-    NSString* preferenceName;
-    id <nnDVStoreProtocol> handler;
-    id <nnDVDoubleUISliderDelegate> pref_delegate;
-    UILabel *sliderTextLabel;
+@interface nnDVDoubleUISlider : UISlider  <nnDVUIBaseProtocol>
+{
+    UILabel *dvSliderTextLabel;
+    nnDVBase* dvInfo;
     
     NSString *labelFormat;
     double labelScale;
 }
 
--(void)setup: (NSString*)name withHandler: (id <nnDVStoreProtocol>) handler;
 
-@property (nonatomic, assign)  id <nnDVDoubleUISliderDelegate> pref_delegate;
-@property (nonatomic, retain) IBOutlet UILabel *sliderTextLabel;
+@property (nonatomic, retain) nnDVBase* dvInfo;
+
+@property (nonatomic, retain) IBOutlet UILabel *dvSliderTextLabel;
 @property (nonatomic, retain) NSString *labelFormat;
 @property (nonatomic, assign) double labelScale;
 
-// Load the UI with the value
--(void)populate;
 
-// Store the value in the preference Store
--(void)save;
 @end

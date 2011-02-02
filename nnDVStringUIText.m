@@ -8,43 +8,33 @@
 
 
 #import "nnDVStringUIText.h"
-@interface nnDVStringUIText() 
-@property (nonatomic, assign) id <nnDVStoreProtocol> handler;
-@property (nonatomic, retain) NSString* preferenceName;
-@end
-
 
 @implementation nnDVStringUIText
-@synthesize preferenceName;
-@synthesize handler;
-@synthesize pref_delegate;
 
+@synthesize dvInfo;
 
 - (void)dealloc {
-    [preferenceName release];
+    [dvInfo release];
     [super dealloc];
 }
 
-
-
--(void)setup: (NSString*)name withHandler: (id <nnDVStoreProtocol>) hdnlr
+-(void)setup
 {
-    self.preferenceName = name;
-    self.handler = hdnlr;
 }
 
 -(void)populate
 {
-    [self setText: [handler stringForKey: preferenceName]];
+    [self setText: [self.dvInfo.dvStoreHandler stringForKey: self.dvInfo.dvVarName]];
 }
 
 -(void)save
 {
-    if ([handler stringForKey: preferenceName] != self.text)
+    if ([self.dvInfo.dvStoreHandler stringForKey: self.dvInfo.dvVarName] != self.text)
     {
-        [self.pref_delegate valueUpdated: self newValue: self.text];
-        [handler setString:  self.text forKey:preferenceName];
+        [self.dvInfo.dvChangedDelegate valueUpdated: self.dvInfo];
+        [self.dvInfo.dvStoreHandler setString:  self.text forKey:self.dvInfo.dvVarName];
     }
 }
+
 
 @end

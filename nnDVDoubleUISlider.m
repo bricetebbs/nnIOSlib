@@ -8,22 +8,14 @@
 
 #import "nnDVDoubleUISlider.h"
 
-@interface nnDVDoubleUISlider() 
-@property (nonatomic, assign) id <nnDVStoreProtocol> handler;
-@property (nonatomic, retain) NSString* preferenceName;
-@end
-
-@implementation nnDVDoubleUISlider;
-@synthesize handler;
-@synthesize pref_delegate;
-@synthesize preferenceName;
-@synthesize sliderTextLabel;
+@implementation nnDVDoubleUISlider;@synthesize dvSliderTextLabel;
 @synthesize labelScale;
 @synthesize labelFormat;
+@synthesize dvInfo;
 
 - (void)dealloc {
-    [preferenceName release];
-    [sliderTextLabel release];
+    [dvInfo release];
+    [dvSliderTextLabel release];
     [labelFormat release];
     [super dealloc];
 }
@@ -31,7 +23,7 @@
 -(void)updateTextFromSlider
 {    
     double mph = self.labelScale * self.value;
-    sliderTextLabel.text = [NSString stringWithFormat:self.labelFormat,mph];
+    self.dvSliderTextLabel.text = [NSString stringWithFormat:self.labelFormat,mph];
 }
 
 -(void)sliderChanged:(UISlider *)slider
@@ -39,27 +31,24 @@
     [self updateTextFromSlider];
 }
 
--(void)setup: (NSString*)name withHandler: (id <nnDVStoreProtocol>) hdnlr
+-(void)setup
 {
-    self.preferenceName = name;
-    self.handler = hdnlr;
     // So that text label wil be updated
     [self addTarget:self action:@selector(sliderChanged:) forControlEvents:UIControlEventValueChanged];
 }
 
-
 -(void)populate
 {
-    [self setValue: [handler doubleForKey: preferenceName]];
+    [self setValue: [self.dvInfo.dvStoreHandler doubleForKey: self.dvInfo.dvVarName]];
     [self updateTextFromSlider];
 }
 
 -(void)save
 {
-    if ([handler doubleForKey: preferenceName] != self.value)
+    if ([self.dvInfo.dvStoreHandler doubleForKey: self.dvInfo.dvVarName] != self.value)
     {
-        [self.pref_delegate valueUpdated: self newValue: self.value];
-        [handler setDouble: self.value forKey:preferenceName];
+        [self.dvInfo.dvChangedDelegate valueUpdated: self.dvInfo];
+        [self.dvInfo.dvStoreHandler setDouble: self.value forKey:self.dvInfo.dvVarName];
     }
 }
 

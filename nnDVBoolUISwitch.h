@@ -9,27 +9,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "nnDVStoreProtocol.h"
+#import "nnDV.h"
 
-@class nnDVBoolUISwitch;
-@protocol nnDVBoolUISwitchDelegate
--(void)valueUpdated: (nnDVBoolUISwitch*)preference newValue: (BOOL)value;
-@end
 
-@interface nnDVBoolUISwitch : UISwitch {
-
-    NSString* preferenceName;
-    id <nnDVStoreProtocol> handler;
-    id <nnDVBoolUISwitchDelegate> pref_delegate;
+@interface nnDVBoolUISwitch : UISwitch <nnDVUIBaseProtocol> {
+    nnDVBase *dvInfo;
 }
 
-@property (nonatomic, assign)  id <nnDVBoolUISwitchDelegate> pref_delegate;
+@property (nonatomic, retain) nnDVBase* dvInfo;
 
--(void)setup: (NSString*)name withHandler: (id <nnDVStoreProtocol>) handler;
-
-// Load the UI with the value
--(void)populate;
-
-// Store the value in the preference Store
--(void)save;
 @end

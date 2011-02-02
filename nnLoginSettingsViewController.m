@@ -7,10 +7,13 @@
 
 #import "nnLoginSettingsViewController.h"
 
-
+@interface nnLoginSettingsViewController()
+@property (nonatomic,retain) id <nnDVStoreProtocol> preferenceManager;
+@end
 
 @implementation nnLoginSettingsViewController
 
+@synthesize preferenceManager;
 @synthesize password;
 @synthesize username;
 @synthesize spinner;
@@ -27,31 +30,33 @@
     [password release];
     [username release];
     [version release];
-    [usernameKey release];
-    [passwordKey release];
+    [preferenceManager release];
     [super dealloc];
 }
 
 
--(void)setupPreferences: (id <nnDVStoreProtocol>) pm usernameKey: user passwordKey: pass
+-(void)setupPreferences: (id <nnDVStoreProtocol>) pm usernameKey:(NSString*) user passwordKey: (NSString*)pass
 {
-    preferenceManager = pm;
-    usernameKey = [user copy];
-    passwordKey = [pass copy];
+
+    self.preferenceManager = pm;
+    
+    self.username.dvInfo = [[[nnDVString alloc] init: user withHandler: pm] autorelease];
+    self.password.dvInfo = [[[nnDVString alloc] init: pass withHandler: pm] autorelease];
+    
 }
+
 
 -(void)storeSettings
 {
-    [preferenceManager setString: self.username.text forKey: usernameKey];
-    [preferenceManager setString: self.password.text forKey: passwordKey];
+    [username save];
+    [password save];
     self.authChanged = YES;
 }
 
 -(void)populateSettings
 {
-    self.username.text =  [preferenceManager stringForKey: usernameKey];
-    self.password.text =  [preferenceManager stringForKey: passwordKey];
-    
+    [username populate];
+    [password populate];
     [indicatorButton setHidden: YES];
 }
 

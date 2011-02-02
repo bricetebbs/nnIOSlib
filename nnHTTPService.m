@@ -109,6 +109,8 @@
     NSObject* obj = [parser objectWithString:responseStr];
     
     [self processResponse: obj forRequest: theRequest];
+    
+    [parser release];
 }
 
 

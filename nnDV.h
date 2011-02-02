@@ -18,7 +18,7 @@ enum
 };
 
 
-@protocol nnDVStoreProtocol
+@protocol nnDVStoreProtocol <NSObject>
 
 -(NSObject*)objectForKey:(NSString*)key;
 -(void)setObject: id forKey: (NSString*)key;
@@ -55,7 +55,7 @@ enum
 -(int)getDataType;
 
 @property (nonatomic, assign) id <nnDVChangedProtocol> dvChangedDelegate;
-@property (nonatomic, assign) id <nnDVStoreProtocol> dvStoreHandler;
+@property (nonatomic, retain) id <nnDVStoreProtocol> dvStoreHandler;
 @property (nonatomic, retain) NSString* dvVarName;
 @end
 

@@ -7,42 +7,30 @@
 //
 
 #import "nnDVBoolUISwitch.h"
-@interface nnDVBoolUISwitch () 
-@property (nonatomic, assign) id <nnDVStoreProtocol> handler;
-@property (nonatomic, retain) NSString* preferenceName;
-@end
-
 
 @implementation nnDVBoolUISwitch
-@synthesize preferenceName;
-@synthesize handler;
-@synthesize pref_delegate;
-
+@synthesize dvInfo;
 
 - (void)dealloc {
-    [preferenceName release];
+    [dvInfo release];
     [super dealloc];
 }
 
-
-
--(void)setup: (NSString*)name withHandler: (id <nnDVStoreProtocol>) hdnlr
+-(void)setup
 {
-    self.preferenceName = name;
-    self.handler = hdnlr;
 }
 
 -(void)populate
 {
-    [self setOn: [handler boolForKey: preferenceName]];
+    [self setOn: [self.dvInfo.dvStoreHandler boolForKey: self.dvInfo.dvVarName]];
 }
 
 -(void)save
 {
-    if ([handler boolForKey: preferenceName] != self.on)
+    if ([self.dvInfo.dvStoreHandler boolForKey: self.dvInfo.dvVarName] != self.on)
     {
-        [self.pref_delegate valueUpdated: self newValue: self.on];
-        [handler setBool: self.on forKey:preferenceName];
+        [self.dvInfo.dvChangedDelegate valueUpdated: self.dvInfo];
+        [self.dvInfo.dvStoreHandler setBool: self.on forKey: self.dvInfo.dvVarName];
     }
 }
 

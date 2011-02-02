@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "nnDVStoreProtocol.h"
+#import "nnDVStringUIText.h"
 
 @protocol nnLoginSettingsViewDelegate;
 
@@ -16,24 +16,23 @@
 @interface nnLoginSettingsViewController : UIViewController <UITextFieldDelegate> {
     
     id <nnLoginSettingsViewDelegate> delegate;
-    UITextField *username;
-    UITextField *password;
+    
+    nnDVStringUIText *username;
+    nnDVStringUIText *password;
+    
     UIButton *loginCheck;
     UIButton *indicatorButton;
     BOOL authChanged;
     UILabel *version;
     UIActivityIndicatorView *spinner;
     
-    NSString *usernameKey;
-    NSString *passwordKey;
-    
     id <nnDVStoreProtocol> preferenceManager;
     
 }
 
 @property (nonatomic, assign)  id <nnLoginSettingsViewDelegate> delegate;
-@property (nonatomic, retain) IBOutlet UITextField *username;
-@property (nonatomic, retain) IBOutlet UITextField *password;
+@property (nonatomic, retain) IBOutlet nnDVStringUIText *username;
+@property (nonatomic, retain) IBOutlet nnDVStringUIText *password;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet UIButton *loginCheck;
 @property (nonatomic, retain) IBOutlet UIButton *indicatorButton;
@@ -42,7 +41,7 @@
 
 @property (nonatomic, assign) BOOL authChanged;
 
--(void)setupPreferences: (id <nnDVStoreProtocol>) pm usernameKey: user passwordKey: pass;
+-(void)setupPreferences: (id <nnDVStoreProtocol>) pm usernameKey: (NSString*) user passwordKey: (NSString*)  pass;
 
 -(IBAction)save;
 -(IBAction)cancel;
