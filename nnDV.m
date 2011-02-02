@@ -51,3 +51,8 @@
 @implementation nnDVBool
 -(int)getDataType { return nnkDVDataTypeBool; }
 @end
+
+@implementation nnDVObject
+-(int)getDataType { return nnkDVDataTypeObject; }
+@end
+

@@ -8,6 +8,7 @@
 
 #import "nnDVBoolUISwitch.h"
 
+
 @implementation nnDVBoolUISwitch
 @synthesize dvInfo;
 

@@ -15,7 +15,4 @@
 @interface nnDVBoolUISwitch : UISwitch <nnDVUIBaseProtocol> {
     nnDVBase *dvInfo;
 }
-
-@property (nonatomic, retain) nnDVBase* dvInfo;
-
 @end

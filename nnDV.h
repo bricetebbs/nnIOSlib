@@ -9,6 +9,8 @@
 
 #import <UIKit/UIKit.h>
 
+
+// DV Types
 enum 
 {
     nnkDVDataTypeObject = 1,
@@ -18,6 +20,9 @@ enum
 };
 
 
+//
+// The protocol for talking between the DV vars and the datastore
+//
 @protocol nnDVStoreProtocol <NSObject>
 
 -(NSObject*)objectForKey:(NSString*)key;
@@ -37,21 +42,22 @@ enum
 // Some functions to specify records?
 @end
 
-@class nnDVBase;
 
+
+// Protocol for listeners for changes
+@class nnDVBase;
 @protocol nnDVChangedProtocol 
 -(void)valueUpdated: (nnDVBase*) element;
 @end
 
+// "Abstract" Base class for DV Vars
 @interface nnDVBase : NSObject
 {
     NSString* dvVarName;
     id <nnDVStoreProtocol> dvStoreHandler;
     id <nnDVChangedProtocol> dvChangedDelegate;
 }
-
 -(id)init: (NSString*)name withHandler: (id <nnDVStoreProtocol>) handler;
-
 -(int)getDataType;
 
 @property (nonatomic, assign) id <nnDVChangedProtocol> dvChangedDelegate;
@@ -59,19 +65,16 @@ enum
 @property (nonatomic, retain) NSString* dvVarName;
 @end
 
-@interface nnDVBool : nnDVBase {}
-@end
+@interface nnDVBool : nnDVBase @end
+@interface nnDVString : nnDVBase @end
+@interface nnDVDouble : nnDVBase @end
+@interface nnDVObject : nnDVBase @end
 
-@interface nnDVString : nnDVBase {}
-@end
-
-@interface nnDVDouble : nnDVBase {}
-@end
-
-// Maybe add more to this and hide some stuff in nnDVBase?
-
+// This is a protocol for UI object derived classes to insure they implement
+// methods called by the controllers.
 @protocol nnDVUIBaseProtocol
 -(void)setup;
 -(void)populate;
--(void)save; 
+-(void)save;
+@property (retain, nonatomic) nnDVBase* dvInfo;
 @end

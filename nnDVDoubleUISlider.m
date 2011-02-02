@@ -8,7 +8,9 @@
 
 #import "nnDVDoubleUISlider.h"
 
-@implementation nnDVDoubleUISlider;@synthesize dvSliderTextLabel;
+
+@implementation nnDVDoubleUISlider;
+@synthesize dvSliderTextLabel;
 @synthesize labelScale;
 @synthesize labelFormat;
 @synthesize dvInfo;

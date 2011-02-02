@@ -19,7 +19,6 @@
 }
 
 
-@property (nonatomic, retain) nnDVBase* dvInfo;
 
 @property (nonatomic, retain) IBOutlet UILabel *dvSliderTextLabel;
 @property (nonatomic, retain) NSString *labelFormat;

@@ -15,8 +15,6 @@
     nnDVBase* dvInfo;
 }
 
-@property (nonatomic, retain) nnDVBase* dvInfo;
-
 @end
 
 
