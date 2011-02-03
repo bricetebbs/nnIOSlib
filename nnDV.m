@@ -8,6 +8,31 @@
 
 #import "nnDV.h"
 
+NSString* const nnkDVDataTypeLabelObject = @"object";
+NSString* const nnkDVDataTypeLabelBool =@"bool";
+NSString* const nnkDVDataTypeLabelDouble = @"double";
+NSString* const nnkDVDataTypeLabelInt = @"int";
+NSString* const nnkDVDataTypeLabelString = @"string";
+
+
+NSString* const nnkDVDataTypeLabelUnknown = @"unknown";
+
+NSString* nnDVLabelForType(int type)
+{
+    if(type == nnkDVDataTypeBool)
+        return nnkDVDataTypeLabelBool;
+    if(type == nnkDVDataTypeInt)
+        return nnkDVDataTypeLabelInt;
+    if(type == nnkDVDataTypeDouble)
+        return nnkDVDataTypeLabelDouble;
+    if(type == nnkDVDataTypeString)
+        return nnkDVDataTypeLabelString;
+    if(type == nnkDVDataTypeObject)
+        return nnkDVDataTypeLabelObject;
+    
+    return nnkDVDataTypeLabelUnknown;
+}
+
 
 @implementation nnDVBase
 
@@ -52,7 +77,16 @@
 -(int)getDataType { return nnkDVDataTypeBool; }
 @end
 
+
+@implementation nnDVInt
+-(int)getDataType { return nnkDVDataTypeInt; }
+@end
+
+
 @implementation nnDVObject
 -(int)getDataType { return nnkDVDataTypeObject; }
 @end
+
+
+
 

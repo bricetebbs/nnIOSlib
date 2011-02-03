@@ -11,14 +11,17 @@
 
 
 // DV Types
+// TODO: Maybe these should be strings
 enum 
 {
-    nnkDVDataTypeObject = 1,
-    nnkDVDataTypeBool   = 2,
+    nnkDVDataTypeBool= 1,
+    nnkDVDataTypeInt = 2,
     nnkDVDataTypeDouble = 3,
     nnkDVDataTypeString = 4,
+    nnkDVDataTypeObject = 1000,
 };
 
+NSString* nnDVLabelForType(int type);
 
 //
 // The protocol for talking between the DV vars and the datastore
@@ -41,7 +44,6 @@ enum
 
 // Some functions to specify records?
 @end
-
 
 
 // Protocol for listeners for changes
@@ -67,6 +69,7 @@ enum
 
 @interface nnDVBool : nnDVBase @end
 @interface nnDVString : nnDVBase @end
+@interface nnDVInt : nnDVBase @end
 @interface nnDVDouble : nnDVBase @end
 @interface nnDVObject : nnDVBase @end
 
@@ -78,3 +81,4 @@ enum
 -(void)save;
 @property (retain, nonatomic) nnDVBase* dvInfo;
 @end
+
