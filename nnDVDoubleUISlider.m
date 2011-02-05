@@ -24,33 +24,40 @@
 
 -(void)updateTextFromSlider
 {    
-    double mph = self.labelScale * self.value;
-    self.dvSliderTextLabel.text = [NSString stringWithFormat:self.labelFormat,mph];
+    if (self.dvSliderTextLabel && self.labelFormat)
+    {
+        double sval = self.labelScale * self.value;
+        self.dvSliderTextLabel.text = [NSString stringWithFormat:self.labelFormat, sval];
+    }
 }
 
 -(void)sliderChanged:(UISlider *)slider
 {
     [self updateTextFromSlider];
+    [self.dvInfo handleChangeDouble: slider.value];
+}
+
+-(BOOL)isChanged
+{
+    return [self.dvInfo getDouble] != self.value;
 }
 
 -(void)setup
 {
-    // So that text label wil be updated
     [self addTarget:self action:@selector(sliderChanged:) forControlEvents:UIControlEventValueChanged];
 }
 
 -(void)populate
 {
-    [self setValue: [self.dvInfo.dvStoreHandler doubleForKey: self.dvInfo.dvVarName]];
+    [self setValue: [self.dvInfo getDouble]];
     [self updateTextFromSlider];
 }
 
 -(void)save
 {
-    if ([self.dvInfo.dvStoreHandler doubleForKey: self.dvInfo.dvVarName] != self.value)
+    if ([self isChanged])
     {
-        [self.dvInfo.dvChangedDelegate valueUpdated: self.dvInfo];
-        [self.dvInfo.dvStoreHandler setDouble: self.value forKey:self.dvInfo.dvVarName];
+        [self.dvInfo handleChangeDouble: self.value];
     }
 }
 

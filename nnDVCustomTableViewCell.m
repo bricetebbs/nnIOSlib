@@ -10,6 +10,14 @@
 
 
 @implementation nnDVCustomTableViewCell
+@synthesize cellLabel;
+
+- (void)dealloc
+{
+    [cellLabel release];
+    [super dealloc];
+}
+
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -27,9 +35,10 @@
     // Configure the view for the selected state
 }
 
-- (void)dealloc
+
+-(void)populate
 {
-    [super dealloc];
 }
+
 
 @end

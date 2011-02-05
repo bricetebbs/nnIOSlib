@@ -28,12 +28,18 @@
 
 -(void)save
 {
-    if ([self.dvInfo.dvStoreHandler boolForKey: self.dvInfo.dvVarName] != self.on)
+    if ([self isChanged])
     {
-        [self.dvInfo.dvChangedDelegate valueUpdated: self.dvInfo];
+        [self.dvInfo notifyUpdate];
         [self.dvInfo.dvStoreHandler setBool: self.on forKey: self.dvInfo.dvVarName];
     }
 }
 
+
+
+-(BOOL)isChanged
+{
+    return [self.dvInfo.dvStoreHandler boolForKey: self.dvInfo.dvVarName] != self.on;
+}
 
 @end

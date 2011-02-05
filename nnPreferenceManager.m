@@ -40,6 +40,16 @@
     [[NSUserDefaults standardUserDefaults] setDouble:d forKey:key];
 }
 
+-(NSInteger)integerForKey:(NSString*)key
+{
+    return [[NSUserDefaults standardUserDefaults] integerForKey: key];
+}
+
+-(void)setInteger:(NSInteger)d forKey: (NSString*)key
+{
+    [[NSUserDefaults standardUserDefaults] setInteger:d forKey:key];
+}
+
 -(NSString*)stringForKey:(NSString*)key
 {
     return [[NSUserDefaults standardUserDefaults] stringForKey: key];
@@ -54,6 +64,11 @@
 {
     
     [[NSUserDefaults standardUserDefaults] registerDefaults: def];
+}
+
+-(NSInteger)numSamplesForKey: (NSString*) key
+{
+    return 1;
 }
 
 @end

@@ -11,25 +11,23 @@
 
 
 // DV Types
-// TODO: Maybe these should be strings
 enum 
 {
     nnkDVDataTypeBool= 1,
     nnkDVDataTypeInt = 2,
     nnkDVDataTypeDouble = 3,
     nnkDVDataTypeString = 4,
-    nnkDVDataTypeObject = 1000,
+//    nnkDVDataTypeObject = 1000, Maybe sometime
 };
 
 NSString* nnDVLabelForType(int type);
 
 //
-// The protocol for talking between the DV vars and the datastore
+// The protocol for talking between the DV vars and the datastore This might get broken up or 
+// Made more friendly to the UI.
 //
 @protocol nnDVStoreProtocol <NSObject>
 
--(NSObject*)objectForKey:(NSString*)key;
--(void)setObject: id forKey: (NSString*)key;
 
 -(BOOL)boolForKey:(NSString*)key;
 -(void)setBool: (BOOL) b forKey: (NSString*)key;
@@ -37,10 +35,15 @@ NSString* nnDVLabelForType(int type);
 -(double)doubleForKey:(NSString*)key;
 -(void)setDouble: (double) d forKey: (NSString*)key;
 
+-(NSInteger)integerForKey: (NSString*)key;
+-(void)setInteger: (NSInteger) i forKey:(NSString*)key;
+
 -(NSString*)stringForKey:(NSString*)key;
 -(void)setString: (NSString*)s forKey: (NSString*)key;
 
 -(void) registerDefaults: (NSDictionary*) def;
+
+-(NSInteger) numSamplesForKey: (NSString*) key;
 
 // Some functions to specify records?
 @end
@@ -58,9 +61,29 @@ NSString* nnDVLabelForType(int type);
     NSString* dvVarName;
     id <nnDVStoreProtocol> dvStoreHandler;
     id <nnDVChangedProtocol> dvChangedDelegate;
+    BOOL hold_updates;   // Updates are held until save
 }
+
 -(id)init: (NSString*)name withHandler: (id <nnDVStoreProtocol>) handler;
 -(int)getDataType;
+-(void)notifyUpdate; // Send out the changed message to the delegate
+
+-(void)handleChangeBool: (BOOL)b;
+-(void)handleChangeDouble: (double) d;
+-(void)handleChangeString: (NSString*) s;
+-(void)handleChangeInteger: (NSInteger) i;
+
+-(BOOL)getBool;
+-(double)getDouble;
+-(NSString*)getString;
+-(NSInteger)getInteger;
+-(NSInteger)getNumSamples;
+
+-(void)storeBool: (BOOL)b;
+-(void)storeDouble: (double) d;
+-(void)storeString: (NSString*) s;
+-(void)storeInteger: (NSInteger) i;
+
 
 @property (nonatomic, assign) id <nnDVChangedProtocol> dvChangedDelegate;
 @property (nonatomic, retain) id <nnDVStoreProtocol> dvStoreHandler;
@@ -79,6 +102,7 @@ NSString* nnDVLabelForType(int type);
 -(void)setup;
 -(void)populate;
 -(void)save;
+-(BOOL)isChanged;
 @property (retain, nonatomic) nnDVBase* dvInfo;
 @end
 

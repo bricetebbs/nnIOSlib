@@ -11,7 +11,8 @@
 
 @interface nnDVIntUIBumpButton : UIButton <nnDVUIBaseProtocol>
 {
-       nnDVBase *dvInfo;
+    nnDVBase *dvInfo;
+    NSInteger count;
 }
 
 @end

@@ -11,4 +11,12 @@
 
 @implementation nnDVSliderTableViewCell
 
+@synthesize slider;
+
+-(void)populate
+{
+    [slider populate];
+}
+
+
 @end

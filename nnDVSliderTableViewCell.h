@@ -7,10 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "nnDVCustomTableViewCell.h"
+#import "nnDVDoubleUISlider.h"
 
-
-@interface nnDVSliderTableViewCell : nnDVCustomTableViewCell {
-    
+@interface nnDVSliderTableViewCell : nnDVCustomTableViewCell{
+    nnDVDoubleUISlider* slider;
 }
+@property (nonatomic,retain) IBOutlet nnDVDoubleUISlider* slider;
 
 @end

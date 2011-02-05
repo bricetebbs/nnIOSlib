@@ -8,9 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+#import "nnDVCustomTableViewCell.h"
+#import "nnDVIntUIBumpButton.h"
 
 @interface nnDVCounterTableViewCell : nnDVCustomTableViewCell {
-    
+    nnDVIntUIBumpButton* bumpButton;
 }
+
+@property (nonatomic, retain) IBOutlet nnDVIntUIBumpButton *bumpButton;
 
 @end

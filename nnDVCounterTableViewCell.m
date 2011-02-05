@@ -10,5 +10,13 @@
 
 
 @implementation nnDVCounterTableViewCell
+@synthesize bumpButton;
+
+
+-(void)populate
+{
+    [bumpButton populate];
+}
+
 
 @end

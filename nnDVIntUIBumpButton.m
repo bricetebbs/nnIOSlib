@@ -17,21 +17,32 @@
     [super dealloc];
 }
 
+-(BOOL)isChanged
+{
+    return [self.dvInfo getInteger] != count;
+}
+
+-(void)buttonPressed: (UIButton*) button
+{
+    [self.dvInfo handleChangeBool: YES];
+}
+
 -(void)setup
 {
+    count = [self.dvInfo getNumSamples];
+    
+    [self addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 -(void)populate
 {
-    [self setTitle: [NSString stringWithFormat:@"%d", 
-                     [self.dvInfo.dvStoreHandler integerForKey: self.dvInfo.dvVarName] ] forState:UIControlStateNormal];
+    count = [self.dvInfo getNumSamples];
+    [self setTitle: [NSString stringWithFormat:@"%d", count] forState:UIControlStateNormal];
 }
 
 -(void)save
 {
-    [self.dvInfo.dvStoreHandler sampleKey: self.dvInfo.dvVarName];
-    [self.dvInfo.dvChangedDelegate valueUpdated: self.dvInfo];
+    [self.dvInfo handleChangeBool: YES];
 }
-
 
 @end

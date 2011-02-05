@@ -7,12 +7,13 @@
 
 #import <UIKit/UIKit.h>
 #import "nnCustomTableViewCell.h"
+#import "nnDVDoubleUISlider.h"
+
 @interface nnSliderTableViewCell : nnCustomTableViewCell {
-    UISlider *slider;
+    nnDVDoubleUISlider *slider;
 }
-@property (nonatomic, retain) IBOutlet UISlider *slider;
+@property (nonatomic, retain) IBOutlet nnDVDoubleUISlider *slider;
 
 - (IBAction) adjustSliderValue: (UISlider *) slider;
-
 
 @end
