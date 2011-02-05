@@ -35,6 +35,7 @@ NSString* nnDVLabelForType(int type)
 @synthesize dvStoreHandler;
 @synthesize dvVarName;
 @synthesize dvChangedDelegate;
+@synthesize dvHoldUpdates;
 
 -(void)dealloc
 {
@@ -63,58 +64,58 @@ NSString* nnDVLabelForType(int type)
 
 -(void)handleChangeBool: (BOOL) b
 {
-    if(!hold_updates)
+    if(!dvHoldUpdates)
     {
         [self storeBool: b];
-        [self notifyUpdate];
     }
 }
 
 -(void)handleChangeDouble: (double) d
 {
-    if(!hold_updates)
+    if(!dvHoldUpdates)
     {
         [self storeDouble: d];
-        [self notifyUpdate];
     }
 }
 
 -(void)handleChangeString: (NSString*) s
 {
-    if(!hold_updates)
+    if(!dvHoldUpdates)
     {
         [self storeString: s];
-        [self notifyUpdate];
     }
 }
 
 -(void)handleChangeInteger: (NSInteger) i
 {
-    if(!hold_updates)
+    if(!dvHoldUpdates)
     {
         [self storeInteger: i];
-        [self notifyUpdate];
     }
 }
 
 -(void)storeBool: (BOOL) b
 {
     [self.dvStoreHandler setBool: b forKey: self.dvVarName];
+    [self notifyUpdate];
 }
 
 -(void)storeDouble: (double) d
 {
     [self.dvStoreHandler setDouble: d forKey: self.dvVarName];
+    [self notifyUpdate];
 }
 
 -(void)storeString: (NSString*) s
 {
     [self.dvStoreHandler setString: s forKey: self.dvVarName];
+    [self notifyUpdate];
 }
 
 -(void)storeInteger: (NSInteger) i
 {
     [self.dvStoreHandler setInteger: i forKey: self.dvVarName];
+    [self notifyUpdate];
 }
 
 

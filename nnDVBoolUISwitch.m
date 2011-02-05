@@ -17,8 +17,17 @@
     [super dealloc];
 }
 
--(void)setup
+
+-(void)switchChanged: (UISwitch*)sw
 {
+    [self.dvInfo handleChangeBool: sw.on];
+}
+
+-(void)awakeFromNib
+{
+    [super awakeFromNib];
+    [self addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+
 }
 
 -(void)populate
@@ -30,11 +39,9 @@
 {
     if ([self isChanged])
     {
-        [self.dvInfo notifyUpdate];
-        [self.dvInfo.dvStoreHandler setBool: self.on forKey: self.dvInfo.dvVarName];
+        [self.dvInfo storeBool: self.on];
     }
 }
-
 
 
 -(BOOL)isChanged

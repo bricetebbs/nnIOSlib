@@ -43,6 +43,9 @@
     self.username.dvInfo = [[[nnDVString alloc] init: user withHandler: pm] autorelease];
     self.password.dvInfo = [[[nnDVString alloc] init: pass withHandler: pm] autorelease];
     
+    
+    self.username.dvInfo.dvHoldUpdates = YES;
+    self.password.dvInfo.dvHoldUpdates = YES;
 }
 
 

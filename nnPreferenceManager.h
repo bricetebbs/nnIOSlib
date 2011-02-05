@@ -10,8 +10,12 @@
 #import <Foundation/Foundation.h>
 
 #import "nnDV.h"
+
+
 @interface nnPreferenceManager : NSObject <nnDVStoreProtocol> {
 // The methods are all defined by the protocol
 }
+
+-(void) registerDefaults: (NSDictionary*) def;
 
 @end

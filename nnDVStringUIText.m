@@ -9,7 +9,6 @@
 
 #import "nnDVStringUIText.h"
 
-
 @implementation nnDVStringUIText
 
 @synthesize dvInfo;
@@ -19,21 +18,32 @@
     [super dealloc];
 }
 
--(void)setup
+-(BOOL)isChanged
 {
+    return [self.dvInfo getString] != self.text;
+}
+
+-(void)textChanged
+{
+    [self.dvInfo handleChangeString: self.text];
+}
+
+-(void)awakeFromNib
+{
+    [super awakeFromNib];
+    [self addTarget:self action:@selector(textChanged) forControlEvents:UIControlEventEditingChanged];
 }
 
 -(void)populate
 {
-    [self setText: [self.dvInfo.dvStoreHandler stringForKey: self.dvInfo.dvVarName]];
+    [self setText: [self.dvInfo getString]];
 }
 
 -(void)save
 {
-    if ([self.dvInfo.dvStoreHandler stringForKey: self.dvInfo.dvVarName] != self.text)
+    if ([self isChanged])
     {
-        [self.dvInfo.dvChangedDelegate valueUpdated: self.dvInfo];
-        [self.dvInfo.dvStoreHandler setString:  self.text forKey:self.dvInfo.dvVarName];
+        [self.dvInfo storeString: self.text];
     }
 }
 

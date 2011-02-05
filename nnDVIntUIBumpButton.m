@@ -25,14 +25,17 @@
 -(void)buttonPressed: (UIButton*) button
 {
     [self.dvInfo handleChangeBool: YES];
+    count += 1;
 }
 
--(void)setup
+
+-(void)awakeFromNib
 {
-    count = [self.dvInfo getNumSamples];
+    [super awakeFromNib];
     
     [self addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
 }
+
 
 -(void)populate
 {
@@ -42,7 +45,10 @@
 
 -(void)save
 {
-    [self.dvInfo handleChangeBool: YES];
+    if ([self isChanged])
+    {
+        [self.dvInfo handleChangeBool: YES];
+    }
 }
 
 @end

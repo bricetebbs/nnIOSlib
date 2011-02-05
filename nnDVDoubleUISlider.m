@@ -37,14 +37,17 @@
     [self.dvInfo handleChangeDouble: slider.value];
 }
 
+-(void)awakeFromNib
+{
+    self.labelScale= 1.0;
+    self.labelFormat = @"%4.2f";
+    [self addTarget:self action:@selector(sliderChanged:) forControlEvents:UIControlEventValueChanged];
+}
+
+
 -(BOOL)isChanged
 {
     return [self.dvInfo getDouble] != self.value;
-}
-
--(void)setup
-{
-    [self addTarget:self action:@selector(sliderChanged:) forControlEvents:UIControlEventValueChanged];
 }
 
 -(void)populate
@@ -57,7 +60,7 @@
 {
     if ([self isChanged])
     {
-        [self.dvInfo handleChangeDouble: self.value];
+        [self.dvInfo storeDouble: self.value];
     }
 }
 

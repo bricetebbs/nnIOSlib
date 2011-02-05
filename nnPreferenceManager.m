@@ -10,15 +10,6 @@
 
 @implementation nnPreferenceManager
 
--(NSObject*)objectForKey:(NSString*)key
-{
-    return [[NSUserDefaults standardUserDefaults] objectForKey: key];
-}
-
--(void)setObject: id forKey: (NSString*)key
-{
-    [[NSUserDefaults standardUserDefaults] setObject:id forKey:key];
-}
 
 -(BOOL)boolForKey:(NSString*)key
 {
@@ -60,15 +51,15 @@
     [[NSUserDefaults standardUserDefaults] setObject:s forKey:key];
 }
 
--(void) registerDefaults: (NSDictionary*) def
-{
-    
-    [[NSUserDefaults standardUserDefaults] registerDefaults: def];
-}
-
 -(NSInteger)numSamplesForKey: (NSString*) key
 {
     return 1;
+}
+
+
+-(void) registerDefaults: (NSDictionary*) def
+{
+    [[NSUserDefaults standardUserDefaults] registerDefaults: def];
 }
 
 @end

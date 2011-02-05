@@ -41,9 +41,8 @@ NSString* nnDVLabelForType(int type);
 -(NSString*)stringForKey:(NSString*)key;
 -(void)setString: (NSString*)s forKey: (NSString*)key;
 
--(void) registerDefaults: (NSDictionary*) def;
-
 -(NSInteger) numSamplesForKey: (NSString*) key;
+
 
 // Some functions to specify records?
 @end
@@ -61,7 +60,7 @@ NSString* nnDVLabelForType(int type);
     NSString* dvVarName;
     id <nnDVStoreProtocol> dvStoreHandler;
     id <nnDVChangedProtocol> dvChangedDelegate;
-    BOOL hold_updates;   // Updates are held until save
+    BOOL dvHoldUpdates;   // Updates are held until save
 }
 
 -(id)init: (NSString*)name withHandler: (id <nnDVStoreProtocol>) handler;
@@ -88,6 +87,7 @@ NSString* nnDVLabelForType(int type);
 @property (nonatomic, assign) id <nnDVChangedProtocol> dvChangedDelegate;
 @property (nonatomic, retain) id <nnDVStoreProtocol> dvStoreHandler;
 @property (nonatomic, retain) NSString* dvVarName;
+@property (nonatomic, assign) BOOL dvHoldUpdates;
 @end
 
 @interface nnDVBool : nnDVBase @end
@@ -99,7 +99,6 @@ NSString* nnDVLabelForType(int type);
 // This is a protocol for UI object derived classes to insure they implement
 // methods called by the controllers.
 @protocol nnDVUIBaseProtocol
--(void)setup;
 -(void)populate;
 -(void)save;
 -(BOOL)isChanged;
