@@ -29,19 +29,19 @@ NSString* nnDVLabelForType(int type);
 @protocol nnDVStoreProtocol <NSObject>
 
 
--(BOOL)boolForKey:(NSString*)key;
--(void)setBool: (BOOL) b forKey: (NSString*)key;
+-(BOOL)boolForKey:(NSObject*)key;
+-(void)setBool: (BOOL) b forKey: (NSObject*)key;
 
--(double)doubleForKey:(NSString*)key;
--(void)setDouble: (double) d forKey: (NSString*)key;
+-(double)doubleForKey:(NSObject*)key;
+-(void)setDouble: (double) d forKey: (NSObject*)key;
 
--(NSInteger)integerForKey: (NSString*)key;
--(void)setInteger: (NSInteger) i forKey:(NSString*)key;
+-(NSInteger)integerForKey: (NSObject*)key;
+-(void)setInteger: (NSInteger) i forKey:(NSObject*)key;
 
--(NSString*)stringForKey:(NSString*)key;
--(void)setString: (NSString*)s forKey: (NSString*)key;
+-(NSString*)stringForKey:(NSObject*)key;
+-(void)setString: (NSString*)s forKey: (NSObject*)key;
 
--(NSInteger) numSamplesForKey: (NSString*) key;
+-(NSInteger) numSamplesForKey: (NSObject*) key;
 
 
 // Some functions to specify records?
@@ -57,20 +57,25 @@ NSString* nnDVLabelForType(int type);
 // "Abstract" Base class for DV Vars
 @interface nnDVBase : NSObject
 {
-    NSString* dvVarName;
+    NSObject* dvTag;
     id <nnDVStoreProtocol> dvStoreHandler;
     id <nnDVChangedProtocol> dvChangedDelegate;
     BOOL dvHoldUpdates;   // Updates are held until save
 }
 
--(id)init: (NSString*)name withHandler: (id <nnDVStoreProtocol>) handler;
+-(id)init: (NSObject*)name withHandler: (id <nnDVStoreProtocol>) handler;
 -(int)getDataType;
 -(void)notifyUpdate; // Send out the changed message to the delegate
+
+
+-(BOOL)matchesTag: (NSObject*)o;
+
 
 -(void)handleChangeBool: (BOOL)b;
 -(void)handleChangeDouble: (double) d;
 -(void)handleChangeString: (NSString*) s;
 -(void)handleChangeInteger: (NSInteger) i;
+
 
 -(BOOL)getBool;
 -(double)getDouble;
@@ -86,7 +91,7 @@ NSString* nnDVLabelForType(int type);
 
 @property (nonatomic, assign) id <nnDVChangedProtocol> dvChangedDelegate;
 @property (nonatomic, retain) id <nnDVStoreProtocol> dvStoreHandler;
-@property (nonatomic, retain) NSString* dvVarName;
+@property (nonatomic, retain) NSObject* dvTag;
 @property (nonatomic, assign) BOOL dvHoldUpdates;
 @end
 

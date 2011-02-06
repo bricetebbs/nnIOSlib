@@ -32,7 +32,7 @@
 
 -(void)populate
 {
-    [self setOn: [self.dvInfo.dvStoreHandler boolForKey: self.dvInfo.dvVarName]];
+    [self setOn: [self.dvInfo getBool]];
 }
 
 -(void)save
@@ -46,7 +46,7 @@
 
 -(BOOL)isChanged
 {
-    return [self.dvInfo.dvStoreHandler boolForKey: self.dvInfo.dvVarName] != self.on;
+    return [self.dvInfo getBool] != self.on;
 }
 
 @end

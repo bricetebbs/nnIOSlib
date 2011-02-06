@@ -33,13 +33,13 @@ NSString* nnDVLabelForType(int type)
 @implementation nnDVBase
 
 @synthesize dvStoreHandler;
-@synthesize dvVarName;
+@synthesize dvTag;
 @synthesize dvChangedDelegate;
 @synthesize dvHoldUpdates;
 
 -(void)dealloc
 {
-    [dvVarName release];
+    [dvTag release];
     [dvStoreHandler release];
     [super dealloc];
 }
@@ -49,13 +49,20 @@ NSString* nnDVLabelForType(int type)
     self = [super init];
     if (self)
     {
-        self.dvVarName = name;
+        self.dvTag = name;
         self.dvStoreHandler = hdnlr;
     }
     return self;
 }
 
 -(int)getDataType { return 0;}
+
+
+
+-(BOOL)matchesTag: (NSObject*)o
+{
+    return [self.dvTag isEqual: o];
+}
 
 -(void)notifyUpdate
 {
@@ -96,49 +103,49 @@ NSString* nnDVLabelForType(int type)
 
 -(void)storeBool: (BOOL) b
 {
-    [self.dvStoreHandler setBool: b forKey: self.dvVarName];
+    [self.dvStoreHandler setBool: b forKey: self.dvTag];
     [self notifyUpdate];
 }
 
 -(void)storeDouble: (double) d
 {
-    [self.dvStoreHandler setDouble: d forKey: self.dvVarName];
+    [self.dvStoreHandler setDouble: d forKey: self.dvTag];
     [self notifyUpdate];
 }
 
 -(void)storeString: (NSString*) s
 {
-    [self.dvStoreHandler setString: s forKey: self.dvVarName];
+    [self.dvStoreHandler setString: s forKey: self.dvTag];
     [self notifyUpdate];
 }
 
 -(void)storeInteger: (NSInteger) i
 {
-    [self.dvStoreHandler setInteger: i forKey: self.dvVarName];
+    [self.dvStoreHandler setInteger: i forKey: self.dvTag];
     [self notifyUpdate];
 }
 
 
 -(BOOL)getBool
 {
-    return [self.dvStoreHandler boolForKey: self.dvVarName];
+    return [self.dvStoreHandler boolForKey: self.dvTag];
 }
 -(double)getDouble
 {
-    return [self.dvStoreHandler doubleForKey: self.dvVarName];
+    return [self.dvStoreHandler doubleForKey: self.dvTag];
 }
 -(NSString*)getString
 {
-    return [self.dvStoreHandler stringForKey: self.dvVarName];
+    return [self.dvStoreHandler stringForKey: self.dvTag];
 }
 -(NSInteger)getInteger
 {
-    return [self.dvStoreHandler integerForKey: self.dvVarName];
+    return [self.dvStoreHandler integerForKey: self.dvTag];
 }
 
 -(NSInteger)getNumSamples
 {
-    return [self.dvStoreHandler numSamplesForKey: self.dvVarName];
+    return [self.dvStoreHandler numSamplesForKey: self.dvTag];
 }
 
 @end
