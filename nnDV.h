@@ -70,7 +70,7 @@ NSString* nnDVLabelForType(int type);
 
 -(BOOL)matchesTag: (NSObject*)o;
 
-
+//Helpers for user classes
 -(void)handleChangeBool: (BOOL)b;
 -(void)handleChangeDouble: (double) d;
 -(void)handleChangeString: (NSString*) s;
@@ -81,6 +81,8 @@ NSString* nnDVLabelForType(int type);
 -(double)getDouble;
 -(NSString*)getString;
 -(NSInteger)getInteger;
+
+// THis is used for a nnDVStoreProtocol which counts the changes/records
 -(NSInteger)getNumSamples;
 
 -(void)storeBool: (BOOL)b;
@@ -104,9 +106,9 @@ NSString* nnDVLabelForType(int type);
 // This is a protocol for UI object derived classes to insure they implement
 // methods called by the controllers.
 @protocol nnDVUIBaseProtocol
--(void)populate;
--(void)save;
--(BOOL)isChanged;
+-(void)populate;  // Load the UI element from the DV
+-(void)save;      // Save what is in the DV to the UI Element
+-(BOOL)isChanged; // Does the UI element differ from the DV Value
 @property (retain, nonatomic) nnDVBase* dvInfo;
 @end
 
