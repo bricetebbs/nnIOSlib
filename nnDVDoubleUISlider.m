@@ -1,9 +1,8 @@
 //
 //  nnDVDoubleUISlider.m
-//  glogger
 //
 //  Created by Brice Tebbs on 1/30/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 northNitch Studios, Inc. All rights reserved.
 //
 
 #import "nnDVDoubleUISlider.h"
