@@ -143,6 +143,24 @@
                                          inManagedObjectContext: self.managedObjectContext];
 }
 
+
+-(id) findObject: (NSString*) entityName withPredicate: (NSPredicate*)predicate andSort: (NSArray*)sortDescriptors
+{
+    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+
+    
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    [fetchRequest setPredicate: predicate];
+    [fetchRequest setEntity: [self getEntityDescription: entityName]];
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest: fetchRequest error: &error];
+    if ([results count])
+    {
+        return [results objectAtIndex:0];
+    }
+    return nil;
+}
+
 -(void)deleteObject: (id) objectToDelete
 {
     [self.managedObjectContext deleteObject: objectToDelete];

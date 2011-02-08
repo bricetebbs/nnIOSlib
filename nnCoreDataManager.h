@@ -37,6 +37,8 @@
 -(void)deleteObject: (id)objectToDelete;
 -(id) newObject: (NSString*) entityName;
 
+-(id)findObject:(NSString*)entityName withPredicate: (NSPredicate*)predicate andSort: (NSArray*)sortDescriptors;
+
 -(NSError*)saveContext;
 
 

@@ -15,9 +15,8 @@
 - (void)dealloc {
     [dvInfo release];
     [super dealloc];
-}
-
-
+} 
+ 
 -(void)switchChanged: (UISwitch*)sw
 {
     [self.dvInfo handleChangeBool: sw.on];
