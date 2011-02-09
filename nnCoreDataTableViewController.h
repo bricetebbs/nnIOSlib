@@ -10,6 +10,10 @@
 #import "northNitch.h"
 #import "nnCoreDataManager.h"
 
+@protocol nnCoreDataTableViewItemProtocol
+-(NSString*)listLabel;
+@end
+
 @interface nnCoreDataTableViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
     NSFetchedResultsController *fetchedResultsController;
     nnCoreDataManager *coreDataManager;	
@@ -33,5 +37,9 @@
 
 // The object at the IndexPath has changed maybe you want to update the Cell display?
 -(void)updateCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath; 
+
+// May want to override these
+- (void)configureCell:(UITableViewCell *)cell forItem: (id <nnCoreDataTableViewItemProtocol>) item;
+-(UITableViewCell*)allocateACellIn:(UITableView *)tableView forItem:  (id <nnCoreDataTableViewItemProtocol>) item;
 
 @end

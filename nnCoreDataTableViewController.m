@@ -71,19 +71,64 @@
     return YES;
 };
 
-
-
-
-- (void)updateCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath 
-{
-   // [self configureCell:cell atIndexPath:indexPath];
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+		
+		// Delete the managed object.
+		NSManagedObjectContext *context = [fetchedResultsController managedObjectContext];
+		[context deleteObject:[fetchedResultsController objectAtIndexPath:indexPath]];
+		
+		NSError *error;
+		if (![context save:&error]) {
+			// Update to handle the error appropriately.
+			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+			exit(-1);  // Fail
+		}
+        
+        //[self.tableView reloadData];
+    }   
 }
 
+
+- (void)configureCell:(UITableViewCell *)cell forItem: (id <nnCoreDataTableViewItemProtocol>) item
+{
+    cell.textLabel.text = [item listLabel];
+}
+
+-(UITableViewCell*)allocateACellIn:(UITableView *)tableView forItem: (id <nnCoreDataTableViewItemProtocol>) item
+{
+    UITableViewCell* cell;
+    static NSString *kCellIdentifier = @"UITableViewCell";
+    cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellIdentifier] autorelease];
+    }
+    
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    return cell;
+}
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+	id <nnCoreDataTableViewItemProtocol> item = [fetchedResultsController objectAtIndexPath:indexPath];
+    
+    UITableViewCell* cell = [self allocateACellIn: tableView forItem: item];
+    // Configure the cell
+    [self configureCell: cell forItem: item];
+    return cell;
+}
+
+-(void)updateCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+	
+	id <nnCoreDataTableViewItemProtocol> item = [fetchedResultsController objectAtIndexPath:indexPath];
+    [self configureCell: cell forItem: item];
+}
 
 
 #pragma mark -
 #pragma mark Fetched results controller
-
 
 
 /**
