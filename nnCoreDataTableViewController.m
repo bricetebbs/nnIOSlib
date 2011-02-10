@@ -74,19 +74,14 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-		
 		// Delete the managed object.
 		NSManagedObjectContext *context = [fetchedResultsController managedObjectContext];
 		[context deleteObject:[fetchedResultsController objectAtIndexPath:indexPath]];
 		
 		NSError *error;
 		if (![context save:&error]) {
-			// Update to handle the error appropriately.
-			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-			exit(-1);  // Fail
+            [coreDataManager handleError: error];
 		}
-        
-        //[self.tableView reloadData];
     }   
 }
 
@@ -159,11 +154,16 @@
 			[self updateCell: [tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
 			break;
 			
-		case NSFetchedResultsChangeMove:
-			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-			// Reloading the section inserts a new row and ensures that titles are updated appropriately.
-			[tableView reloadSections:[NSIndexSet indexSetWithIndex:newIndexPath.section] withRowAnimation:UITableViewRowAnimationFade];
-			break;
+    //
+    //  I think we dont need this if we re-order the elements by changing the sort field in 
+    //  -(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath 
+    //
+//		case NSFetchedResultsChangeMove:
+//			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+//			// Reloading the section inserts a new row and ensures that titles are updated appropriately.
+//			[tableView reloadSections:[NSIndexSet indexSetWithIndex:newIndexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+//			break;
 	}
 }
 
