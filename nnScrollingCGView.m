@@ -8,8 +8,12 @@
 
 #import "nnScrollingCGView.h"
 #import "northNitch.h"
+@interface nnScrollingCGView()
+@property (nonatomic, retain)  UIView* zoomDummy;
+@end
 
 @implementation nnScrollingCGView
+@synthesize zoomDummy;
 
 - (void)dealloc {
     [zoomDummy release];
@@ -25,10 +29,14 @@
 
 -(void)setupScollingCGViewWithMapSize: (CGRect) rect
 {
+    if (self.zoomDummy)
+    {
+        [self.zoomDummy removeFromSuperview];
+    }
     // Create dummy view to Zoom. This keeps the zooming values out of the CTM
     
-    zoomDummy = [[UIView alloc] initWithFrame: rect];
-    zoomDummy.hidden = YES;
+    self.zoomDummy = [[UIView alloc] initWithFrame: rect];
+    self.zoomDummy.hidden = YES;
 
     self.delegate = self;
     self.contentSize = CGSizeMake(rect.size.width, rect.size.height);
