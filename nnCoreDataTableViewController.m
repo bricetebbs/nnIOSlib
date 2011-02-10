@@ -39,6 +39,7 @@
 	}
 }
 
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
     NSInteger dataSections = [[fetchedResultsController sections] count];
@@ -190,23 +191,28 @@
 
 
 // Overridden by subclass
--(NSFetchRequest *)getFetchRequestForController
+-(void)setupFetchRequest: (NSFetchRequest *)fetchRequest
 {
-    return nil;
 }
 
 
 - (nnErrorCode)prepareFetchResultsController
 {
 
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [self setupFetchRequest: fetchRequest];
+    
 	self.fetchedResultsController =  [[NSFetchedResultsController alloc] 
-                                 initWithFetchRequest: [self getFetchRequestForController] 
+                                 initWithFetchRequest: fetchRequest
                                  managedObjectContext: self.coreDataManager.managedObjectContext
                                  sectionNameKeyPath:nil cacheName:nil];
 	
 	
     self.fetchedResultsController.delegate = self;
     
+    [fetchRequest release];
 	
     return nnkNoError;
 }    

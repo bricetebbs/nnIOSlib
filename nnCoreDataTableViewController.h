@@ -19,7 +19,7 @@
     nnCoreDataManager *coreDataManager;	
 }
 
-// Called to setup the fetchedResultsController. Uses getFetchRequestForController.
+// Called to setup the fetchedResultsController. Uses -(void)setupFetchRequest: (NSFetchRequest *)fetchRequest.
 -(nnErrorCode)prepareFetchResultsController;
 
 
@@ -32,8 +32,8 @@
 // Subclasses will want to override these
 //
 
-// Create a NSFetchRequest, set an entity and sort descriptors
--(NSFetchRequest *)getFetchRequestForController;  
+// Setup a NSFetchRequest, set an entity and sort descriptors
+-(void)setupFetchRequest: (NSFetchRequest *)fetchRequest;
 
 // The object at the IndexPath has changed maybe you want to update the Cell display?
 -(void)updateCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath; 
