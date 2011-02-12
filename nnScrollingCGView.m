@@ -27,6 +27,27 @@
     return self;
 }
 
+
+-(void)updateMatrices
+{
+    
+    // This is the zoom and scale transform
+    
+    CGFloat zoomX = (nnkZoomHorizontal & scrollZoomOptions) ? zoomScale : 1.0;
+    CGFloat zoomY = (nnkZoomVertical   & scrollZoomOptions) ? zoomScale : 1.0;
+    
+    CGFloat offsetX = (nnkScrollingHorizontal & scrollZoomOptions) ? - scrollOffset.x : 0.0;
+    CGFloat offsetY = (nnkScrollingVertical   & scrollZoomOptions) ? - scrollOffset.y : 0.0;
+    
+    
+    mapToViewTransform = CGAffineTransformMake(zoomX, 0.0, 0.0, zoomY, offsetX, offsetY);
+    viewToMapTransform = CGAffineTransformInvert(mapToViewTransform);
+    
+    worldToViewTransform = CGAffineTransformConcat(worldToMapTransform, mapToViewTransform);
+    viewToWorldTransform = CGAffineTransformConcat(viewToMapTransform, mapToWorldTransform);
+}
+
+
 -(void)setupScollingCGViewWithMapSize: (CGRect) rect
 {
     if (self.zoomDummy)
@@ -43,7 +64,6 @@
     
     [self addSubview: zoomDummy];
     
-    
     worldToMapTransform = CGAffineTransformIdentity;
     mapToWorldTransform = CGAffineTransformIdentity;
     
@@ -53,6 +73,7 @@
     zoomScale = 1.0;
     scrollOffset = CGPointMake(0,0);
     
+    [self updateMatrices];
 }
 
 -(void)setScrollZoomOptions: (NSInteger) options
@@ -73,26 +94,6 @@
     zoomMax = max;
     
     [self setupZoomMinMax];
-}
-
-
--(void)updateMatrices
-{
-    
-    // This is the zoom and scale transform
-    
-    CGFloat zoomX = (nnkZoomHorizontal & scrollZoomOptions) ? zoomScale : 1.0;
-    CGFloat zoomY = (nnkZoomVertical   & scrollZoomOptions) ? zoomScale : 1.0;
-    
-    CGFloat offsetX = (nnkScrollingHorizontal & scrollZoomOptions) ? - scrollOffset.x : 0.0;
-    CGFloat offsetY = (nnkScrollingVertical   & scrollZoomOptions) ? - scrollOffset.y : 0.0;
-    
-
-    mapToViewTransform = CGAffineTransformMake(zoomX, 0.0, 0.0, zoomY, offsetX, offsetY);
-    viewToMapTransform = CGAffineTransformInvert(mapToViewTransform);
-    
-    worldToViewTransform = CGAffineTransformConcat(worldToMapTransform, mapToViewTransform);
-    viewToWorldTransform = CGAffineTransformConcat(viewToMapTransform, mapToWorldTransform);
 }
 
 -(void)updateWorldToMap: (CGAffineTransform)w2d
@@ -130,6 +131,8 @@
 -(void)fitView
 {
     [self zoomToRect: zoomDummy.bounds animated: NO];
+    
+    [self updateMatrices];
 }
 
 -(void)centerView
@@ -140,6 +143,8 @@
                                    self.bounds.size.height);
     
     [self zoomToRect: centerRect animated: NO];
+    
+    [self updateMatrices];
 }
 
 
