@@ -37,7 +37,7 @@ NSInteger TOUCH_LINE_WIDTH = 10;
     
     CGContextSaveGState(context);
     CGContextSetLineWidth(context, TOUCH_LINE_WIDTH);
-    CGContextSetRGBStrokeColor(context, 1.0, 0.0, 0.0, 1.0);
+    CGContextSetRGBStrokeColor(context, 1.0, 0.0, 1.0, 1.0);
     CGContextSetLineCap(context, kCGLineCapRound);
     CGContextSetLineJoin(context, kCGLineJoinRound);
     
