@@ -80,12 +80,12 @@ NSString* DEFAULT_NOTE_HEADER_NO_BANNER = @"<en-note>\n";
     if (sandbox)
     {
         userStoreUri = [[NSURL alloc] initWithString: @"https://sandbox.evernote.com/edam/user"];
-        noteStoreUriBase = [[NSString alloc]  initWithString: @"http://sandbox.evernote.com/edam/note/"];
+        noteStoreUriBase = [[NSString alloc]  initWithString: @"https://sandbox.evernote.com/edam/note/"];
     }
     else
     {
         userStoreUri = [[NSURL alloc] initWithString: @"https://www.evernote.com/edam/user"];
-        noteStoreUriBase = [[NSString alloc]  initWithString: @"http://www.evernote.com/edam/note/"];
+        noteStoreUriBase = [[NSString alloc]  initWithString: @"https://www.evernote.com/edam/note/"];
     }
     
     THTTPClient* userStoreClient = [[THTTPClient alloc] initWithURL:userStoreUri];
