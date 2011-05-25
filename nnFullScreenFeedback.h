@@ -11,10 +11,12 @@
 @interface nnFullScreenFeedback :  UIViewController {
     UILabel *statusInfo;
     UIActivityIndicatorView *spinner;
+    BOOL freeRotate;
 
 }
 @property (nonatomic, retain) IBOutlet UILabel *statusInfo;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic, assign) BOOL freeRotate;
 
 
 

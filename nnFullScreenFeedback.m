@@ -11,6 +11,7 @@
 @implementation nnFullScreenFeedback
 @synthesize statusInfo;
 @synthesize spinner;
+@synthesize freeRotate;
 
 - (void)dealloc {
     [spinner release];
@@ -34,6 +35,10 @@
     [super viewWillAppear:animated];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
+    return self.freeRotate;
+}
 
 
 
