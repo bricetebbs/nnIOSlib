@@ -356,7 +356,7 @@ NSString* DEFAULT_NOTE_HEADER_NO_BANNER = @"<en-note>\n";
         
         [note setContent:contentString];
         
-
+        [note setUpdated:0];
         [noteStore updateNote: authToken : note];
                               
         note = [noteStore getNote: authToken : ti.tag : NO :NO :NO :NO];
