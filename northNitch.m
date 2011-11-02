@@ -52,7 +52,7 @@ void nnGetDateInfo(double *timestamp, NSInteger* hours, NSInteger *minutes, NSIn
 
 BOOL notInPortraitMode()
 {
-     UIInterfaceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
+     UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
     return (interfaceOrientation && interfaceOrientation !=UIInterfaceOrientationPortrait);
 }
 

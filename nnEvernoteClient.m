@@ -267,8 +267,6 @@ NSString* DEFAULT_NOTE_HEADER_NO_BANNER = @"<en-note>\n";
 
 
 
-
-
 -(nnErrorCode)getAllTrackingInfo: (NSMutableArray*)rti
 {
     EDAMNoteList* noteList;
@@ -316,6 +314,7 @@ NSString* DEFAULT_NOTE_HEADER_NO_BANNER = @"<en-note>\n";
 
     return nnkNoError;
 }
+
 -(nnErrorCode)writeItems: (NSArray*) items andHeader:(NSString*)header withTracking:(nnLocalSyncTrackingInfo*)ti
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];

@@ -13,10 +13,12 @@
 @synthesize index;
 @synthesize cellLabel;
 @synthesize checkButton;
+@synthesize moreButton;
 
 - (void)dealloc {
     [cellLabel release];
     [checkButton release];
+    [moreButton release];
     [super dealloc];
 }
 
@@ -44,6 +46,10 @@
     [self setChecked: newValue];
     [handler checkChanged: newValue forCell: self];
     
+}
+-(IBAction)moreClicked
+{
+    [handler moreClickedforCell: self];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

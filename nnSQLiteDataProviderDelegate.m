@@ -162,6 +162,31 @@ NSString* DB_ITEM_TABLE_NAME = @"items";
 }
 
 
+-(nnErrorCode)getNameForGroupKey: (NSInteger) groupKey intoString:(NSString **)string
+{
+    
+    nnSQLQuery *q = [[[nnSQLQuery alloc] init] autorelease];
+    
+    NSInteger error = [db_delegate createQuery:@"SELECT label from items where pk=? order by priority;"
+                                        saveIn: q];
+    
+    if (error)
+        return error;
+    error = [q bindParameters: [NSArray arrayWithObjects: [NSNumber numberWithInt: groupKey], nil]];
+    if (error)
+        return error;
+
+    error=[q step];
+    if (error)
+        return error;
+    {
+        *string = [[q stringValue] retain];
+    }
+    
+    return nnkNoError;
+}
+
+
 -(nnErrorCode)getDataForGroupKey: (NSInteger) groupKey intoArray: (NSMutableArray*)items
 {
     

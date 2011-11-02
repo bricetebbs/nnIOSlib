@@ -226,7 +226,7 @@ NSString* DB_FILE_NAME = @"dbmgr004.sqlite";
     NSInteger code;
     currentColumn = 0;
     code = sqlite3_step(statement);
-    if (code == SQLITE_ROW || SQLITE_DONE) {
+    if (code == SQLITE_ROW || code == SQLITE_DONE) {
         return nnkNoError;
     }
     return nnkSQLiteQueryError;

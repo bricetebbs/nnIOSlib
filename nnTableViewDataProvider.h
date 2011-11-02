@@ -31,6 +31,7 @@
 -(nnErrorCode)emptyGroup: (NSInteger)groupKey;
 -(nnErrorCode)getDataForGroupKey: (NSInteger)groupKey intoArray: (NSMutableArray*)items;
 -(nnErrorCode)getItemForPK: (NSInteger) pk into: (nnListItem*)item;
+-(nnErrorCode)getNameForGroupKey: (NSInteger)groupKey intoString: (NSString**)string;
 
 @end
 
@@ -75,12 +76,15 @@
 
 //Read from memory
 -(NSInteger)getNumItems;
+-(NSString*)getLabelForGroup: (NSInteger) group;
 -(NSString*)getLabelForIndex: (NSInteger) item;
 -(BOOL)getCheckedForIndex: (NSInteger) item;
 
 -(NSInteger)getStateForIndex: (NSInteger) item;
 -(id)getStringDataForItem: (NSInteger) item;
 -(NSInteger)getPKAtIndex:(NSInteger) idx;
+
+-(BOOL)hasExtraAtIndex: (NSInteger)item;
 
 
 

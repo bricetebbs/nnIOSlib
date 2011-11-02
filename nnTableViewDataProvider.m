@@ -62,6 +62,23 @@
     return nnkNoError;
 }
 
+-(BOOL)hasExtraAtIndex:(NSInteger)item
+{
+    NSString *a = [self getLabelForIndex: item];
+    NSString *b = [[self getStringDataForItem: item] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    b = [b stringByReplacingOccurrencesOfString:@"<br/>" withString:@""];
+    b = [b stringByReplacingOccurrencesOfString:@"<div>" withString:@""];
+    b = [b stringByReplacingOccurrencesOfString:@"</div>" withString:@""];
+    b = [b stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    b = [b stringByReplacingOccurrencesOfString:@"&apos;" withString:@"'"];
+    b = [b stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
+    b = [b stringByReplacingOccurrencesOfString:@"&lt;" withString:@"<"];
+    b = [b stringByReplacingOccurrencesOfString:@"&amp;" withString:@"&"];
+    b = [b stringByReplacingOccurrencesOfString:@"&nbsp;" withString:@""];
+    
+    return ![a isEqualToString:b];
+}
+
 -(nnErrorCode)addItemUsingString: (NSString*)name;
 {
     nnListItem *t = [[nnListItem alloc] init];
@@ -144,6 +161,14 @@
     return [ti label];
 }
 
+-(NSString*)getLabelForGroup:(NSInteger)group   
+{
+    NSString *string = nil;
+    [delegate getNameForGroupKey:group intoString: &string];
+    if (string)
+        return string;
+    return [NSString stringWithString:@""];
+}
 
 -(nnErrorCode)setCheckedForIndex:(NSInteger)idx as:(BOOL)checked
 {
