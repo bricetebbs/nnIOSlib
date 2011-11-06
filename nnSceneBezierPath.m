@@ -231,7 +231,7 @@ Point2	*d;			/*  Array of digitized points */
 int		first, last;	/* Indices of first and last pts in region */
 Vector2	tHat1, tHat2;	/* Unit tangent vectors at endpoints */
 double	error;		/*  User-defined error squared	   */
-CGPathRef cgPath;
+CGMutablePathRef cgPath;
 {
     BezierCurve	bezCurve; /*Control points of fitted Bezier curve*/
     double	*u;		/*  Parameter values for point  */
