@@ -74,7 +74,7 @@ int TOUCH_LINE_WIDTH = 4.0;
     ey = py + width/2;
     
     
-    UInt32 ix, iy;
+    SInt32 ix, iy;
     UInt32 outIdx = 0;
     
     pixels = (const UInt32*)CFDataGetBytePtr(backData);
@@ -280,11 +280,10 @@ int TOUCH_LINE_WIDTH = 4.0;
        // CGSize shadowOffset = CGSizeMake (10, -5);
        // CGContextSetShadow (context, shadowOffset, 5);
     
-    
     for (nnSceneObject *sobj in scene) 
     {
         CGContextSaveGState(context);
-            [sobj draw:context];
+            [sobj draw:context withTransform:CGAffineTransformIdentity];
         CGContextRestoreGState(context);
     }
 

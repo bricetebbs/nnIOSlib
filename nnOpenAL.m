@@ -120,7 +120,7 @@ void* MyGetOpenALAudioData(CFURLRef inFileURL, ALsizei *outDataSize, ALenum *out
         
 #endif
         result = AudioSessionSetActive(true);
-        if (result) NSLog(@"Error setting audio session active! %d\n", result);
+        if (result) NSLog(@"Error setting audio session active! %d\n", (int)result);
     }
     
     
