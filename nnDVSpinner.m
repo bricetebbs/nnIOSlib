@@ -76,6 +76,11 @@
 }
 
 
+-(void)storeValue: (NSInteger) row
+{
+    
+}
+
 -(BOOL)isChanged
 {
     return [self.dvInfo getInteger] != [self selectedRowInComponent: 0];

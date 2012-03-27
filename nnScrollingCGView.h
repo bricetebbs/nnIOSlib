@@ -55,8 +55,8 @@ enum nnScrollingViewOptions
 
 
 -(IBAction) fitView;
-
 -(IBAction) centerView;
+-(IBAction) zoomView;
 
 // Call this when you change the world coordinate system
 -(void)updateWorldToMap: (CGAffineTransform)w2d;

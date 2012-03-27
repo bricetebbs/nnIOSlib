@@ -127,6 +127,10 @@
     return zoomDummy;
 }
 
+-(void)zoomView
+{
+    [self setZoomScale: self.zoomScale * 2.0];
+}
 
 -(void)fitView
 {

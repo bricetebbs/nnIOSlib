@@ -19,9 +19,12 @@
     NSArray *labels;
 }
 
+// This is for the setup
 - (id)valueForKey:(NSString *)key;
 - (void)setValue:(id)value forKey:(NSString *)keyPath;
 
+// People who override the delegates can call this to make it do the save
+-(void)pickerChanged;
 
 @property (nonatomic, assign) NSInteger numRows;
 @property (nonatomic, retain) NSArray* labels;
