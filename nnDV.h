@@ -110,5 +110,8 @@ NSString* nnDVLabelForType(int type);
 -(void)save;      // Save what is in the DV to the UI Element
 -(BOOL)isChanged; // Does the UI element differ from the DV Value
 @property (retain, nonatomic) nnDVBase* dvInfo;
+
+-(void)setupDvInfo: (NSObject*) tag handler: (id <nnDVStoreProtocol>) handler delegate: (id <nnDVChangedProtocol>) delegate;
+
 @end
 

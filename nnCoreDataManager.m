@@ -115,8 +115,13 @@
 
 -(id)newObject: (NSString*) entityName
 {
-    return [NSEntityDescription insertNewObjectForEntityForName:entityName
-                                         inManagedObjectContext: self.managedObjectContext];
+//    return [NSEntityDescription insertNewObjectForEntityForName:entityName
+//                                         inManagedObjectContext: self.managedObjectContext];
+    
+    NSManagedObjectModel *managedObjectModel = [[self.managedObjectContext persistentStoreCoordinator] managedObjectModel];
+    NSEntityDescription *entity =[[managedObjectModel entitiesByName] objectForKey:entityName];
+    NSManagedObject *newObject = [[NSManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext: self.managedObjectContext];
+    return newObject;
 }
 
 

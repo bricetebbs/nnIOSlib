@@ -63,5 +63,13 @@
     }
 }
 
+-(void)setupDvInfo: (NSObject*) tag handler: (id <nnDVStoreProtocol>) handler delegate: (id <nnDVChangedProtocol>) delegate
+{
+    nnDVDouble *d = [ [nnDVDouble alloc] init: tag withHandler: handler];
+    self.dvInfo = d;
+    self.dvInfo.dvChangedDelegate = delegate;
+    [d release];
+}
+
 
 @end

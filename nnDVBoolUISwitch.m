@@ -48,4 +48,13 @@
     return [self.dvInfo getBool] != self.on;
 }
 
+
+-(void)setupDvInfo: (NSObject*) tag handler: (id <nnDVStoreProtocol>) handler delegate: (id <nnDVChangedProtocol>) delegate
+{
+    nnDVBool *b = [ [nnDVBool alloc] init: tag withHandler: handler];
+    self.dvInfo = b;
+    self.dvInfo.dvChangedDelegate = delegate;
+    [b release];
+}
+
 @end
