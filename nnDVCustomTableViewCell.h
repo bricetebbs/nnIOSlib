@@ -11,9 +11,15 @@
 
 @interface nnDVCustomTableViewCell : UITableViewCell {
     UILabel *cellLabel;
+    UIView *colorSwatch;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *cellLabel;
+@property (nonatomic, retain) IBOutlet UIView *colorSwatch;
+
+
+-(void)setColorRed: (double) red green: (double)green blue: (double)blue;
+
 
 // Things subclasses need to do
 //

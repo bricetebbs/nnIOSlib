@@ -11,10 +11,12 @@
 
 @implementation nnDVCustomTableViewCell
 @synthesize cellLabel;
+@synthesize colorSwatch;
 
 - (void)dealloc
 {
     [cellLabel release];
+    [colorSwatch release];
     [super dealloc];
 }
 
@@ -40,5 +42,9 @@
 {
 }
 
+-(void)setColorRed:(double)red green:(double)green blue:(double)blue
+{
+    [colorSwatch setBackgroundColor: [UIColor colorWithRed:red green:green blue:blue alpha:1.0]];   
+}
 
 @end
