@@ -204,15 +204,17 @@
     
     [self setupFetchRequest: fetchRequest];
     
-	self.fetchedResultsController =  [[NSFetchedResultsController alloc] 
-                                 initWithFetchRequest: fetchRequest
-                                 managedObjectContext: self.coreDataManager.managedObjectContext
-                                 sectionNameKeyPath:nil cacheName:nil];
-	
+    NSFetchedResultsController* frc = [[NSFetchedResultsController alloc] 
+                                       initWithFetchRequest: fetchRequest
+                                       managedObjectContext: self.coreDataManager.managedObjectContext
+                                       sectionNameKeyPath:nil cacheName:nil];
+	self.fetchedResultsController = frc;
+
 	
     self.fetchedResultsController.delegate = self;
     
     [fetchRequest release];
+    [frc release];
 	
     return nnkNoError;
 }    

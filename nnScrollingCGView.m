@@ -56,8 +56,11 @@
     }
     // Create dummy view to Zoom. This keeps the zooming values out of the CTM
     
-    self.zoomDummy = [[UIView alloc] initWithFrame: rect];
+    UIView *zd = [[UIView alloc] initWithFrame: rect];
+
+    self.zoomDummy =  zd;
     self.zoomDummy.hidden = YES;
+    [zd release];
 
     self.delegate = self;
     self.contentSize = CGSizeMake(rect.size.width, rect.size.height);

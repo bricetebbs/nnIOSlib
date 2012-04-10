@@ -91,7 +91,7 @@ NSString* nnDVLabelForType(int type);
 -(void)storeInteger: (NSInteger) i;
 
 
-@property (nonatomic, assign) id <nnDVChangedProtocol> dvChangedDelegate;
+@property (nonatomic, retain) id <nnDVChangedProtocol> dvChangedDelegate;
 @property (nonatomic, retain) id <nnDVStoreProtocol> dvStoreHandler;
 @property (nonatomic, retain) NSObject* dvTag;
 @property (nonatomic, assign) BOOL dvHoldUpdates;
