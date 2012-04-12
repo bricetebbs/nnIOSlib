@@ -23,7 +23,9 @@
 - (void)awakeFromNib {
     // Pass the managed object context to the root view controller.
     
-    self.coreDataManager = [[nnCoreDataManager alloc] init];
+    nnCoreDataManager *cdm = [[nnCoreDataManager alloc] init];
+    self.coreDataManager = cdm;
+    [cdm release];
 }
 
 

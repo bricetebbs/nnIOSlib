@@ -47,4 +47,13 @@
 }
 
 
+-(void)setupDvInfo: (NSObject*) tag handler: (id <nnDVStoreProtocol>) handler delegate: (id <nnDVChangedProtocol>) delegate
+{
+    nnDVString *s = [ [nnDVString alloc] init: tag withHandler: handler];
+    self.dvInfo = s;
+    self.dvInfo.dvChangedDelegate = delegate;
+    [s release];
+}
+
+
 @end
