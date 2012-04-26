@@ -9,6 +9,8 @@
 
 #define NUM_TIMES 10
 
+// Just a simple frame rate counter
+
 @interface nnRateCounter : NSObject {
     int nextInsert;
     int count;
