@@ -31,9 +31,6 @@
 }
 
 
-
-
-
 -(void)draw: (CGContextRef)context withTransform: (CGAffineTransform)xform
 {
 #ifdef NN_DEBUG
@@ -54,7 +51,6 @@
 {
     
 }
-
 
 
 static void pointsToImplicitLine(CGPoint p1, CGPoint p2, 
@@ -89,11 +85,10 @@ static BOOL keepPoint(CGPoint pp, CGPoint pn, CGPoint point)
     NSMutableArray* outpoints = [[NSMutableArray alloc] init];
     
     int pcount = [points count];
-    int keep = NO;
+    int keep;
     for(int i = 0; i < pcount; i++)
     {
         CGPoint point =  [[points objectAtIndex: i] CGPointValue];
-        keep = NO;
         if (i < 1 || i > pcount-2)
             keep = YES;
         else 
@@ -107,6 +102,7 @@ static BOOL keepPoint(CGPoint pp, CGPoint pn, CGPoint point)
             [outpoints addObject: [NSValue valueWithCGPoint: point]];
         }
     }
+    [outpoints autorelease];
     return outpoints;
 }
 
@@ -147,9 +143,7 @@ static BOOL keepPoint(CGPoint pp, CGPoint pn, CGPoint point)
     
     NSMutableArray *filteredPoints = [nnLineGraphic filterPoints: points];
     
-    nnSceneObjectPart* rval =[[nnLineGraphic alloc] initWithPoints: filteredPoints];
-    
-    [filteredPoints release];
+    nnSceneObjectPart* rval =[[[nnLineGraphic alloc] initWithPoints: filteredPoints] autorelease];
     
     return rval;
     

@@ -3,7 +3,7 @@
 //  wardap
 //
 //  Created by Brice Tebbs on 2/12/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 northNitchStudios Inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
