@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "nnSceneObjectPart.h"
 
+// A generic scene object that will be rendered in the DrawView
 @interface nnSceneObject : NSObject {
     NSMutableArray *parts;
     CFTimeInterval startTime;
@@ -15,7 +16,6 @@
 
 
 -(id)init;
-
 -(void)draw: (CGContextRef)context withTransform: (CGAffineTransform) xform;
 -(void)animate: (CFTimeInterval) seconds;
 -(void)addPart: (nnSceneObjectPart*)part;

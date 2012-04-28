@@ -8,6 +8,7 @@
 
 #import "nnScrollingCGView.h"
 #import "northNitch.h"
+
 @interface nnScrollingCGView()
 @property (nonatomic, retain)  UIView* zoomDummy;
 @end
@@ -50,6 +51,7 @@
 
 -(void)setupScollingCGViewWithMapSize: (CGRect) rect
 {
+    // If we already have a zoomDummy get rid of it
     if (self.zoomDummy)
     {
         [self.zoomDummy removeFromSuperview];
