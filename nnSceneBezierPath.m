@@ -18,16 +18,18 @@ typedef Point2 Vector2;
 
 typedef Point2 *BezierCurve;
 
+void FitCurve();
+
 @implementation nnSceneBezierPath
 
+#pragma mark Lifetime
 
 - (void)dealloc {
     CGPathRelease(cgPath);
     [super dealloc];
 }
 
-void FitCurve();
-
+#pragma mark Setup
 -(void) setupWithPoints: (NSArray*) points 
 {
     CGPathRelease(cgPath);
@@ -63,13 +65,14 @@ void FitCurve();
     FitCurve(cpoints, [points count], err*err  , cgPath );
 }
 
-
+#pragma mark Drawing
 
 typedef struct {
     CGAffineTransform xform;
     CGContextRef context;
 } _DrawInfo;
 
+// Function to apply at each path point to draw the path.
 void drawFunc(void* ctx, const CGPathElement *element)
 {
     _DrawInfo* info = (_DrawInfo*)ctx;
@@ -120,28 +123,41 @@ void annoFunc(void* ctx, const CGPathElement *element)
 
 -(void)draw: (CGContextRef)context withTransform: (CGAffineTransform) xform
 {
-
+    // First we create this little info block to pass to the CGPathApply function
     _DrawInfo info; 
     info.xform = xform;
     info.context = context;
     
+    // Setup the style
     [drawStyle setupGC: context];
-        
+    
+    // Now we need to call the draw function on every element
     CGPathApply(cgPath, (void*)&info, drawFunc);
     
+    // Run the appropriate Draw function
     if (drawStyle)
         CGContextDrawPath(context, drawStyle.mode);
     else 
         CGContextStrokePath(context);
+
+    // For debugging we can enable this to show us the actual dots
     
-   // CGPathApply(cgPath, (void*)&info, annoFunc);
+    //CGPathApply(cgPath, (void*)&info, annoFunc);
     
 }
 
+-(void)animate: (CFTimeInterval) seconds
+{
+}
 
 
 @end
 
+#pragma mark CurveFitting
+
+//
+// This is called by the curvefitter to add more points into the path
+//
 void AddCurveToPath(degree, b, cgPath)
 int degree;
 BezierCurve b;
@@ -157,8 +173,10 @@ CGMutablePathRef cgPath;
 }
 
 
-
+#pragma mark Graphics Gems Code
+//
 // Code below is adapted from Graphics gems
+//
 /*
  
  An Algorithm for Automatically Fitting Digitized Curves
@@ -166,17 +184,12 @@ CGMutablePathRef cgPath;
  from "Graphics Gems", Academic Press, 1990
  */
 
-//#define TESTMODE
-
 /*  fit_cubic.c	*/									
 /*	Piecewise cubic fitting code	*/
-
-///#include "GraphicsGems.h"					
+			
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
-
 
 extern double V2SquaredLength(), V2Length();
 extern double V2Dot(), V2DistanceBetween2Points(); 

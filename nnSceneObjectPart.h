@@ -1,4 +1,4 @@
-    //
+//
 //  nnSceneObjectPart.h
 //
 //  Created by Brice Tebbs on 4/9/10.
@@ -9,12 +9,12 @@
 
 #include "nnDrawStyle.h"
 
+// A scene is a list/array of nsSceneObject
+// An nsSceneObject is made up of nnSceneObjectParts
 
-
-@interface nnSceneObjectPart : NSObject {
+@interface nnSceneObjectPart : NSObject{
     // We should have a bounds rect in here
-    
-    nnDrawStyle *drawStyle;
+    nnDrawStyle *drawStyle; // Each part has its own style.
 }
 
 -(id)init;
@@ -29,11 +29,5 @@
 // Accessors
 //
 @property (nonatomic, retain) nnDrawStyle *drawStyle;
-
-//
-// Utitily func to create objects from a list of points
-//
-+(nnSceneObjectPart*) createWithPoints: (NSArray *)points;
-
 
 @end

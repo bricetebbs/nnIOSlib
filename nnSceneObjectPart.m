@@ -7,8 +7,6 @@
 //
 
 #import "nnSceneObjectPart.h"
-#import "nnLineGraphic.h"
-
 
 @implementation nnSceneObjectPart
 
@@ -106,48 +104,6 @@ static BOOL keepPoint(CGPoint pp, CGPoint pn, CGPoint point)
     return outpoints;
 }
 
-//
-// Class method works as a factory to create wiggle parts
-//
-+(nnSceneObjectPart*) createWithPoints: (NSArray *)points
-{
-    
-    CGPoint start;
-    CGPoint end;
-    CGPoint dir;
-    
-    start =[[points objectAtIndex: 0] CGPointValue];
-    end = [[points lastObject] CGPointValue];
-    dir.x = (start.x-end.x);
-    dir.y = (start.y-end.y);
-    
-    
-    CGPoint min, max;
-    min = max = start;
-    
-    for (NSValue *nspt in points) {
-        
-        CGPoint pt = [nspt CGPointValue];
-        if (pt.x > max.x)
-            max.x = pt.x;
-        
-        if (pt.y > max.y)
-            max.y = pt.y;
-        
-        if (pt.x < min.x)
-            min.x = pt.x;
-        
-        if (pt.y < min.y)
-            min.y = pt.y;
-    }
-    
-    NSMutableArray *filteredPoints = [nnLineGraphic filterPoints: points];
-    
-    nnSceneObjectPart* rval =[[[nnLineGraphic alloc] initWithPoints: filteredPoints] autorelease];
-    
-    return rval;
-    
-}
 
 
 

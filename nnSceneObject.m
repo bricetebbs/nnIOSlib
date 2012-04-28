@@ -39,6 +39,7 @@
 {
     if (seconds)
         seconds = seconds - startTime;
+    
     for (nnSceneObjectPart *p in parts) {
         [p animate: seconds];
     }
