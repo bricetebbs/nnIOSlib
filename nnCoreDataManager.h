@@ -34,12 +34,15 @@
 
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 
--(void)deleteObject: (id)objectToDelete;
+// Create a new object in the context
 -(id) newObject: (NSString*) entityName;
-
--(id)findObject:(NSString*)entityName withPredicate: (NSPredicate*)predicate andSort: (NSArray*)sortDescriptors;
-
+// Delete the specified object
+-(void)deleteObject: (id)objectToDelete;
+// Save the context
 -(NSError*)saveContext;
+
+// Search the context for the first occurance of the object
+-(id)findObject:(NSString*)entityName withPredicate: (NSPredicate*)predicate andSort: (NSArray*)sortDescriptors;
 
 
 -(NSEntityDescription*)getEntityDescription: (NSString*)entityName;
