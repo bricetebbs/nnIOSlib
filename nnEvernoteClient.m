@@ -6,19 +6,19 @@
 //  Copyright 2010 northNitch Studios, Inc. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
+
 #import "nnEvernoteClient.h"
 
 #import "THTTPClient.h"
 #import "TBinaryProtocol.h"
-#import "UserStore.h"
-#import "NoteStore.h"
+#import "EvernoteUserStore.h"
+#import "EvernoteNoteStore.h"
 
 
 
 @interface nnEvernoteClient ()
-@property (nonatomic, retain) NSURL* userStoreUri;
-@property (nonatomic, retain) NSString *noteStoreUriBase;
-
 
 @property (nonatomic, retain) NSString *consumerKey;
 @property (nonatomic, retain) NSString *consumerSecret;
@@ -28,27 +28,24 @@
 @property (nonatomic, retain) NSString* noteTag;    
 
 @property (nonatomic, retain) EDAMUser *edamUser;
+
 @property (nonatomic, retain) NSString *authToken;
 
-@property (nonatomic, retain) EDAMUserStoreClient *userStore;
-@property (nonatomic, retain) EDAMNoteStoreClient *noteStore;
+@property (nonatomic, retain) EvernoteUserStore *userStore;
+@property (nonatomic, retain) EvernoteNoteStore *noteStore;
 
 @end
 
 
 @implementation nnEvernoteClient
-
-@synthesize userStoreUri;
 @synthesize consumerKey;
 @synthesize consumerSecret;
-@synthesize noteStoreUriBase;
 @synthesize userStore;
 @synthesize noteTag;
 @synthesize appName;
 @synthesize edamUser;
 @synthesize authToken;
 @synthesize isSetup;
-
 @synthesize noteStore;
 
 NSString* DEFAULT_NOTE_HEADER_WITH_BANNER = @"<en-note>\n<div>This note was created with <a href=\"http://www.nimbulist.com\">nimbulist</a> a program which makes Evernote into a quick todo list for the iPhone. </div><div>For more information see <a href=\"http://www.nimbulist.com\">http://www.nimbulist.com</a>.</div>\n";
@@ -56,146 +53,120 @@ NSString* DEFAULT_NOTE_HEADER_NO_BANNER = @"<en-note>\n";
 
 -(void)dealloc
 {
-    [userStoreUri release];
     [consumerKey release];
     [consumerSecret release];
-    [noteStoreUriBase release];
-    
-    
     [edamUser release];
     [authToken release];
-    
-    
     [noteTag release];
     [appName release];
     [userStore release];
     [noteStore release];
-    
+
     [super dealloc];
 }
 
--(nnErrorCode)setupEvernote: (NSString*)appId withKey:(NSString*)key withSecret: (NSString*) secret useTag: (NSString*) tag useSandBox: (BOOL) sandbox
+
+-(void)setupClient
 {
-    
-    if (sandbox)
-    {
-        userStoreUri = [[NSURL alloc] initWithString: @"https://sandbox.evernote.com/edam/user"];
-        noteStoreUriBase = [[NSString alloc]  initWithString: @"https://sandbox.evernote.com/edam/note/"];
-    }
-    else
-    {
-        userStoreUri = [[NSURL alloc] initWithString: @"https://www.evernote.com/edam/user"];
-        noteStoreUriBase = [[NSString alloc]  initWithString: @"https://www.evernote.com/edam/note/"];
-    }
-    
-    THTTPClient* userStoreClient = [[THTTPClient alloc] initWithURL:userStoreUri];
-    TBinaryProtocol* userStoreProtocol = [[TBinaryProtocol alloc]  initWithTransport:userStoreClient];
-    self.userStore = [[EDAMUserStoreClient alloc]  initWithProtocol:userStoreProtocol];
- 
-    BOOL versionOk;
-    
-    self.appName = appId;
-    self.noteTag = tag;
-    
-    @try {
-        versionOk = [userStore checkVersion: self.appName :
-                          [EDAMUserStoreConstants EDAM_VERSION_MAJOR] :
-                          [EDAMUserStoreConstants EDAM_VERSION_MINOR]];
-    }
-    @catch (NSException * e) {
-        [userStoreClient release];
-        [userStoreProtocol release];
-        [userStore release];
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        return nnkEvernoteConnectionFailed;
-    }
-   
-    if (versionOk)
-    {
-        consumerKey = key;
-        consumerSecret = secret;
-    }
-    
-    [userStoreClient release];
-    [userStoreProtocol release];
-    
+    EvernoteSession *session = [EvernoteSession sharedSession];
+    self.authToken = session.authenticationToken;
+    self.noteStore = [EvernoteNoteStore noteStore];
+    self.userStore = [EvernoteUserStore userStore];
     isSetup = YES;
-    return nnkNoError;
 }
 
-
--(nnErrorCode)authenticate: (NSString*)username withPassword: (NSString*)password
+-(BOOL)isAuthenticated
 {
-    
-    NSAutoreleasePool *authPool = [[NSAutoreleasePool alloc] init];
-    
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    EDAMAuthenticationResult* authResult;
-    @try
+    EvernoteSession *session = [EvernoteSession sharedSession];
+    if([session isAuthenticated])
     {
-         authResult = [userStore authenticate:username:password:consumerKey:consumerSecret];
+        [self setupClient];
     }
-    @catch (EDAMUserException *u) {
-         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        [authPool drain];
-        return nnkEvernoteBadCredentials;
-        
-    }
-    @catch (NSException *e) {
-         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        [authPool drain];
-        return nnkEvernoteConnectionFailed;
-    }
-    
-    self.edamUser = [authResult user];
-    self.authToken = [authResult authenticationToken];
-    
-    nnDebugLog(@"Authentication was successful for: %@", [edamUser username]);
-    nnDebugLog(@"Authentication token: %@", authToken);
-    
-    NSURL *noteStoreUri =  [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@%@", noteStoreUriBase, [edamUser shardId]] ];
-    THTTPClient* noteStoreHttpClient = [[THTTPClient alloc]  initWithURL:noteStoreUri];
-    TBinaryProtocol* noteStoreProtocol = [[TBinaryProtocol alloc] initWithTransport:noteStoreHttpClient];
-    
-    // Keep note store
-    self.noteStore = [[EDAMNoteStoreClient alloc] initWithProtocol:noteStoreProtocol];
-    
-    [noteStoreUri release];
-    [noteStoreHttpClient release];
-    [noteStoreProtocol release];
-    
-
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                          
-    [authPool drain];
-    return nnkNoError;
+    return [session isAuthenticated];
 }
 
+-(NSString*)getUser
+{
+    EvernoteSession *session = [EvernoteSession sharedSession];
+    if([session isAuthenticated])
+    {
+        EDAMUser* user = [session.userStore getUser: session.authenticationToken];
+        return user.username;
+    }
+    return nil;
+}
 
 -(NSString*)getGuidForAPPTag: (NSString*) tagName
 {
+    NSArray *tagList = [[noteStore noteStore] listTags: self.authToken];
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    NSArray *tagList = [noteStore listTags: authToken];
     for (EDAMTag* tag in tagList)
     {
         if ([tagName isEqualToString: [tag name]]) 
         {
-            
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             return [tag guid];
         }
     }
     // We don't have this tag.. Oh no!
     EDAMTag *ctag = [[EDAMTag alloc] init];
     [ctag setName: tagName];
-    EDAMTag* newTag = [noteStore createTag: authToken :ctag];
+    EDAMTag* newTag = [[noteStore noteStore] createTag: authToken :ctag];
     [ctag release];
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     return [newTag guid];
-    
 }
+
+-(nnErrorCode)logout
+{
+    EvernoteSession *session = [EvernoteSession sharedSession];
+    [session logout];
+    return nnkNoError;
+}
+
+
+-(void)setup: (NSString*)applicationName withTag: (NSString*) tagName
+{
+    self.appName = applicationName;
+    self.noteTag = tagName;
+}
+
+-(nnErrorCode)handleOAuth: (UIViewController*) view
+{
+    EvernoteSession *session = [EvernoteSession sharedSession];
+
+    [session authenticateWithViewController: view
+                          completionHandler:^(NSError *error) {
+                              // Authentication response is handled in this block
+                              if (error || !session.isAuthenticated) {
+                                  // Either we couldn't authenticate or something else went wrong - inform the user
+                                  if (error) {
+                                      NSLog(@"Error authenticating with Evernote service: %@", error);
+                                      UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                       message:@"Unable to contact evernote."
+                                                                                      delegate:nil
+                                                                             cancelButtonTitle:@"OK"
+                                                                             otherButtonTitles:nil] autorelease];
+                                      [alert show];
+                                  }
+                                  if (!session.isAuthenticated) {
+                                      NSLog(@"User could not be authenticated.");
+                                  
+                                      UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                   message:@"Unable to authenticate."
+                                                                                  delegate:nil
+                                                                         cancelButtonTitle:@"OK"
+                                                                         otherButtonTitles:nil] autorelease];
+                                      [alert show];
+                                  }
+                              }
+                              else {
+                                  [self setupClient];
+                              }
+                          }
+     ];
+     return nnkNoError;
+}
+
 -(nnErrorCode)createNewNoteWithTitle: (NSString*)title setKey:(NSString**)key
 {
     
@@ -206,12 +177,11 @@ NSString* DEFAULT_NOTE_HEADER_NO_BANNER = @"<en-note>\n";
     {
         title =[title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
-        EDAMNotebook *defaultNotebook = [noteStore getDefaultNotebook:authToken];
+        EDAMNotebook *defaultNotebook = [[noteStore noteStore] getDefaultNotebook:authToken];
         EDAMNote *note = [[EDAMNote alloc] init];
         
         EDAMNoteAttributes *attrs = [[EDAMNoteAttributes alloc] init];
         [attrs setSourceApplication: self.appName];
-        
         
         NSArray *defaultTags = [NSArray arrayWithObject: [self getGuidForAPPTag: noteTag]];
         
@@ -227,7 +197,7 @@ NSString* DEFAULT_NOTE_HEADER_NO_BANNER = @"<en-note>\n";
         [content appendString:@"<en-note></en-note>"];
 
         [note setContent:content];
-        newNote = [noteStore createNote:authToken :note];
+        newNote = [[noteStore noteStore]createNote:authToken :note];
         [note release];
         [attrs  release];
         
@@ -248,23 +218,21 @@ NSString* DEFAULT_NOTE_HEADER_NO_BANNER = @"<en-note>\n";
 
 -(nnErrorCode)deleteNoteWithGUID:(NSString *)guid
 {
-    
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
     @try
     {
-        [noteStore deleteNote:authToken :guid];
+        [noteStore.noteStore deleteNote:authToken :guid];
     }
     @catch (NSException *e) {
         return nnkEvernoteDeleteFailed;
     }
-    @finally 
+    @finally
     {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-
     }
     return nnkNoError;
 }
-
 
 
 -(nnErrorCode)getAllTrackingInfo: (NSMutableArray*)rti
@@ -277,29 +245,30 @@ NSString* DEFAULT_NOTE_HEADER_NO_BANNER = @"<en-note>\n";
     @try {
         NSArray *tagArray = [NSArray arrayWithObject: [self getGuidForAPPTag: noteTag]];
         
-        noteFilter = [[[EDAMNoteFilter alloc] initWithOrder: NoteSortOrder_CREATED ascending: YES  
-                                                     words: nil
-                                              notebookGuid: nil 
-                                                  tagGuids: tagArray
-                                                  timeZone: nil
-                                                  inactive: NO] autorelease];
+        noteFilter = [[[EDAMNoteFilter alloc] initWithOrder: NoteSortOrder_CREATED ascending: YES
+                                                      words: nil
+                                               notebookGuid: nil
+                                                   tagGuids: tagArray
+                                                   timeZone: nil
+                                                   inactive: NO] autorelease];
     }
     @catch (NSException* e) {
-         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         return nnkEvernoteFetchNoteListFailed;
     }
-      
+    
     @try
     {
-        noteList = [noteStore findNotes: authToken : noteFilter : 0 : 1000];
+        noteList = [[noteStore noteStore] findNotes: authToken : noteFilter : 0 : 1000];
     }
     @catch (NSException *e) {
-         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         return nnkEvernoteFetchNoteListFailed;
     }
-  
-    for (EDAMNote* note in [noteList notes])
-    {
+    
+    
+    
+    for (EDAMNote* note in [noteList notes]) {
         nnRemoteSyncTrackingInfo *rsti = [[nnRemoteSyncTrackingInfo alloc] init];
         rsti.tag = [note guid];
         rsti.label = [note title];
@@ -309,9 +278,7 @@ NSString* DEFAULT_NOTE_HEADER_NO_BANNER = @"<en-note>\n";
         nnDebugLog(@"Note %@ usn=%d",rsti.label, [note updateSequenceNum]);
         [rsti release];
     }
-
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-
     return nnkNoError;
 }
 
@@ -321,7 +288,7 @@ NSString* DEFAULT_NOTE_HEADER_NO_BANNER = @"<en-note>\n";
     
     @try
     {
-        EDAMNote* note = [noteStore getNote: authToken : ti.tag : NO :NO :NO :NO];
+        EDAMNote* note = [[noteStore noteStore] getNote: authToken : ti.tag : NO :NO :NO :NO];
     
         NSMutableString* contentString = [[NSMutableString alloc] init];
         
@@ -356,9 +323,9 @@ NSString* DEFAULT_NOTE_HEADER_NO_BANNER = @"<en-note>\n";
         [note setContent:contentString];
         
         [note setUpdated:0];
-        [noteStore updateNote: authToken : note];
+        [[noteStore noteStore] updateNote: authToken : note];
                               
-        note = [noteStore getNote: authToken : ti.tag : NO :NO :NO :NO];
+        note = [[noteStore noteStore] getNote: authToken : ti.tag : NO :NO :NO :NO];
         
         ti.remoteCurrentSeq = [note updateSequenceNum];
         
@@ -383,7 +350,7 @@ NSString* DEFAULT_NOTE_HEADER_NO_BANNER = @"<en-note>\n";
     
     @try 
     {
-        note  = [noteStore getNote: authToken : ti.tag : YES :NO :NO :NO];
+        note  = [[noteStore noteStore] getNote: authToken : ti.tag : YES :NO :NO :NO];
         
         content = [[note content] dataUsingEncoding: NSUTF8StringEncoding];
     }

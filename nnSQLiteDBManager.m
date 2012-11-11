@@ -251,13 +251,10 @@ NSString* DB_FILE_NAME = @"dbmgr004.sqlite";
     {
         return [NSString stringWithUTF8String: (const char*)c];
     }
-    
     else {
         return @"";
     }
-
 }
-
 @end
 
 

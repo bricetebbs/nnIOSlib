@@ -8,45 +8,39 @@
 
 #import <Foundation/Foundation.h>
 
+#import "EvernoteSession.h"
+#import "EvernoteUserStore.h"
+#import "EvernoteNoteStore.h"
 
-@class THTTPClient;
-@class TBinaryProtocol;
-@class EDAMUserStoreClient;
 @class EDAMUser;
-@class EDAMNoteStoreClient;
 @class EDAMNote;
-
 
 #import "nnListItem.h"
 #import "nnTableViewDataProvider.h"
 #import "nnRemoteSyncManager.h"
+
+
 
 @interface nnEvernoteClient : NSObject  <nnRemoteDataSourceDelegate, nnRemoteSyncTrackingInfoDelegate> {
     NSString *consumerKey;
 	NSString *consumerSecret;
     
     EDAMUser *edamUser;
-    NSString *authToken;
-    
-    // Im guessing we don't need to keep these around
-    NSURL *userStoreUri;
-	NSString *noteStoreUriBase;
-    
-    EDAMUserStoreClient *userStore;
-    EDAMNoteStoreClient *noteStore;
+    EvernoteUserStore *userStore;
+    EvernoteNoteStore *noteStore;
     
     BOOL isSetup;
-    
     NSString* appName;    
-    NSString* noteTag;    
+    NSString* noteTag;
 }
 
--(nnErrorCode)setupEvernote: (NSString*) appName withKey: (NSString*)consumerKey withSecret: (NSString*) consumerSecret 
-                     useTag: (NSString*) tag
-                 useSandBox: (BOOL) sandbox;
--(nnErrorCode)authenticate: (NSString*)username withPassword: (NSString*)password;
+-(void)setup:(NSString*)applicationName withTag: (NSString*) tagName;
 
-
+-(void)setupClient;
+-(nnErrorCode)handleOAuth: (UIViewController*) view;
+-(nnErrorCode)logout;
+-(BOOL)isAuthenticated;
+-(NSString*)getUser;
 @property (nonatomic, readonly) BOOL isSetup;
 
 @end

@@ -167,7 +167,7 @@
     [delegate getNameForGroupKey:group intoString: &string];
     if (string)
         return string;
-    return [NSString stringWithString:@""];
+    return @"";
 }
 
 -(nnErrorCode)setCheckedForIndex:(NSInteger)idx as:(BOOL)checked
