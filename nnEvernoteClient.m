@@ -142,17 +142,17 @@ NSString* DEFAULT_NOTE_HEADER_NO_BANNER = @"<en-note>\n";
                                   if (error) {
                                       NSLog(@"Error authenticating with Evernote service: %@", error);
                                       UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                       message:@"Unable to contact evernote."
+                                                                                       message:@"Failure returned from Evernote Server - Please try Again."
                                                                                       delegate:nil
                                                                              cancelButtonTitle:@"OK"
                                                                              otherButtonTitles:nil] autorelease];
                                       [alert show];
                                   }
-                                  if (!session.isAuthenticated) {
+                                  else if (!session.isAuthenticated) {
                                       NSLog(@"User could not be authenticated.");
                                   
                                       UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                   message:@"Unable to authenticate."
+                                                                                   message:@"Unable to authenticate. Please check credentials and try again later."
                                                                                   delegate:nil
                                                                          cancelButtonTitle:@"OK"
                                                                          otherButtonTitles:nil] autorelease];
